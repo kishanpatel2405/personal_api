@@ -1,0 +1,397 @@
+Index: utils/enums.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from enum import Enum\n\n\nclass ErrorMessageCodes(str, Enum):\n    NOT_FOUND = \"NOT_FOUND\"\n    BAD_REQUEST = \"BAD_REQUEST\"\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/utils/enums.py b/utils/enums.py
+--- a/utils/enums.py	(revision 8f3a6d5b08f8d8cb14048de74cd266867367cde0)
++++ b/utils/enums.py	(date 1732770277451)
+@@ -4,3 +4,12 @@
+ class ErrorMessageCodes(str, Enum):
+     NOT_FOUND = "NOT_FOUND"
+     BAD_REQUEST = "BAD_REQUEST"
++
++
++class Gender(int, Enum):
++    Male = "male"
++    Female = "female"
++
++
++class Currency(str, Enum):
++    INR = "₹"
+Index: utils/misc.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/utils/misc.py b/utils/misc.py
+--- a/utils/misc.py	(revision 8f3a6d5b08f8d8cb14048de74cd266867367cde0)
++++ b/utils/misc.py	(date 1732771048058)
+@@ -1,0 +1,190 @@
++# import hashlib
++# import json
++# from calendar import timegm
++# from datetime import datetime, timedelta
++# from typing import Optional, Type, Union
++#
++# import jwt
++# import tomlkit
++# from jwt import InvalidAlgorithmError, InvalidTokenError, algorithms
++#
++# from utils.errors import TokenBackendError
++#
++# try:
++#     from jwt import PyJWKClient, PyJWKClientError
++#
++#     JWK_CLIENT_AVAILABLE = True
++# except ImportError:
++#     JWK_CLIENT_AVAILABLE = False
++#
++# ALLOWED_ALGORITHMS = {
++#     "HS256",
++#     "HS384",
++#     "HS512",
++#     "RS256",
++#     "RS384",
++#     "RS512",
++#     "ES256",
++#     "ES384",
++#     "ES512",
++# }
++#
++#
++# def customize_json_serializer(value):
++#     if isinstance(value, datetime):
++#         return value.isoformat()
++#     else:
++#         return value.__dict__
++#
++#
++# def to_json(obj):
++#     return json.dumps(obj, separators=(",", ":"), ensure_ascii=True, default=customize_json_serializer)
++#
++#
++# async def json_or_text(response):
++#     text = await response.text(encoding="utf-8")
++#     try:
++#         return json.loads(text)
++#     except json.JSONDecodeError:
++#         pass
++#
++#     return text
++#
++#
++# def get_project_meta(file):
++#     with open(file) as pyproject:
++#         file_contents = pyproject.read()
++#
++#     return tomlkit.parse(file_contents)["tool"]["poetry"]
++#
++#
++# def datetime_to_epoch(dt):
++#     return timegm(dt.utctimetuple())
++#
++#
++# def aware_utcnow():
++#     return datetime.utcnow()
++#
++#
++# def datetime_from_epoch(ts):
++#     return datetime.utcfromtimestamp(ts)
++#
++#
++# class TokenBackend:
++#     def __init__(
++#         self,
++#         algorithm,
++#         signing_key=None,
++#         verifying_key="",
++#         audience=None,
++#         issuer=None,
++#         jwk_url: str = None,
++#         leeway: Union[float, int, timedelta] = None,
++#         json_encoder: Optional[Type[json.JSONEncoder]] = None,
++#     ):
++#         self._validate_algorithm(algorithm)
++#
++#         self.algorithm = algorithm
++#         self.signing_key = signing_key
++#         self.verifying_key = verifying_key
++#         self.audience = audience
++#         self.issuer = issuer
++#
++#         if JWK_CLIENT_AVAILABLE:
++#             self.jwks_client = PyJWKClient(jwk_url) if jwk_url else None
++#         else:
++#             self.jwks_client = None
++#
++#         self.leeway = leeway
++#         self.json_encoder = json_encoder
++#
++#     def _validate_algorithm(self, algorithm):
++#         """
++#         Ensure that the nominated algorithm is recognized, and that cryptography is installed for those
++#         algorithms that require it
++#         """
++#         if algorithm not in ALLOWED_ALGORITHMS:
++#             raise TokenBackendError(f"Unrecognized algorithm type '{algorithm}'")
++#
++#         if algorithm in algorithms.requires_cryptography and not algorithms.has_crypto:
++#             raise TokenBackendError(f"You must have cryptography installed to use {algorithm}.")
++#
++#     def get_leeway(self) -> timedelta:
++#         if self.leeway is None:
++#             return timedelta(seconds=0)
++#         elif isinstance(self.leeway, (int, float)):
++#             return timedelta(seconds=self.leeway)
++#         elif isinstance(self.leeway, timedelta):
++#             return self.leeway
++#         else:
++#             raise TokenBackendError(f"Unrecognized type '{self.leeway}', 'leeway' must be of type int, float or timedelta.")
++#
++#     def get_verifying_key(self, token):
++#         if self.algorithm.startswith("HS"):
++#             return self.signing_key
++#
++#         if self.jwks_client:
++#             try:
++#                 return self.jwks_client.get_signing_key_from_jwt(token).key
++#             except PyJWKClientError as ex:
++#                 raise TokenBackendError("Token is invalid or expired") from ex
++#
++#         return self.verifying_key
++#
++#     def encode(self, payload):
++#         """
++#         Returns an encoded token for the given payload dictionary.
++#         """
++#         jwt_payload = payload.copy()
++#         if self.audience is not None:
++#             jwt_payload["aud"] = self.audience
++#         if self.issuer is not None:
++#             jwt_payload["iss"] = self.issuer
++#
++#         token = jwt.encode(
++#             jwt_payload,
++#             self.signing_key,
++#             algorithm=self.algorithm,
++#             json_encoder=self.json_encoder,
++#         )
++#         if isinstance(token, bytes):
++#             # For PyJWT <= 1.7.1
++#             return token.decode("utf-8")
++#         # For PyJWT >= 2.0.0a1
++#         return token
++#
++#     def decode(self, token, verify=True):
++#         """
++#         Performs a validation of the given token and returns its payload
++#         dictionary.
++#
++#         Raises a `TokenBackendError` if the token is malformed, if its
++#         signature check fails, or if its 'exp' claim indicates it has expired.
++#         """
++#         try:
++#             return jwt.decode(
++#                 token,
++#                 self.get_verifying_key(token),
++#                 algorithms=[self.algorithm],
++#                 audience=self.audience,
++#                 issuer=self.issuer,
++#                 leeway=self.get_leeway(),
++#                 options={
++#                     "verify_aud": self.audience is not None,
++#                     "verify_signature": verify,
++#                 },
++#             )
++#         except InvalidAlgorithmError as ex:
++#             raise TokenBackendError("Invalid algorithm specified") from ex
++#         except InvalidTokenError as ex:
++#             raise TokenBackendError("Token is invalid or expired") from ex
++#
++#
++# def utc_to_ist(utc_obj):
++#     ist_time = utc_obj + timedelta(hours=5, minutes=30)
++#     return ist_time
++#
++#
++# async def create_hash(string):
++#     hashed_string = hashlib.sha512(string.encode("utf-8")).hexdigest()
++#     return hashed_string
+Index: .idea/personal_api.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<module type=\"PYTHON_MODULE\" version=\"4\">\n  <component name=\"NewModuleRootManager\">\n    <content url=\"file://$MODULE_DIR$\" />\n    <orderEntry type=\"inheritedJdk\" />\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\n  </component>\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/personal_api.iml b/.idea/personal_api.iml
+--- a/.idea/personal_api.iml	(revision 8f3a6d5b08f8d8cb14048de74cd266867367cde0)
++++ b/.idea/personal_api.iml	(date 1732709554770)
+@@ -1,8 +1,10 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <module type="PYTHON_MODULE" version="4">
+   <component name="NewModuleRootManager">
+-    <content url="file://$MODULE_DIR$" />
+-    <orderEntry type="inheritedJdk" />
++    <content url="file://$MODULE_DIR$">
++      <excludeFolder url="file://$MODULE_DIR$/.venv" />
++    </content>
++    <orderEntry type="jdk" jdkName="Python 3.12 (personal_api)" jdkType="Python SDK" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>
+ </module>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"ae586fd5-6392-489b-ae65-9da77ebdf048\" name=\"Changes\" comment=\"\" />\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"ProjectColorInfo\"><![CDATA[{\n  \"associatedIndex\": 5\n}]]></component>\n  <component name=\"ProjectId\" id=\"2pQkNZIqseeqcwSXL24FE22n7lh\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"RunOnceActivity.git.unshallow\": \"true\",\n    \"git-widget-placeholder\": \"master\",\n    \"nodejs_package_manager_path\": \"npm\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  }\n}]]></component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199\" />\n        <option value=\"bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"ae586fd5-6392-489b-ae65-9da77ebdf048\" name=\"Changes\" comment=\"\" />\n      <created>1732705647798</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1732705647798</updated>\n      <workItem from=\"1732705649087\" duration=\"6000\" />\n    </task>\n    <servers />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 8f3a6d5b08f8d8cb14048de74cd266867367cde0)
++++ b/.idea/workspace.xml	(date 1732771048131)
+@@ -1,33 +1,98 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="AutoImportSettings">
++    <option name="autoReloadType" value="SELECTIVE" />
++  </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="" />
++    <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="">
++      <change beforePath="$PROJECT_DIR$/.idea/personal_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/personal_api.iml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/utils/enums.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/enums.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/utils/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/misc.py" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="FileTemplateManagerImpl">
++    <option name="RECENT_TEMPLATES">
++      <list>
++        <option value="FastAPI main" />
++        <option value="FastAPI test_main" />
++        <option value="Python Script" />
++      </list>
++    </option>
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 5
+-}]]></component>
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;kishanpatel2405&quot;
++  }
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/kishanpatel2405/personal_api.git&quot;,
++    &quot;accountId&quot;: &quot;af50deac-a40b-4758-a2b0-606670c62433&quot;
++  }
++}</component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 5
++}</component>
+   <component name="ProjectId" id="2pQkNZIqseeqcwSXL24FE22n7lh" />
+-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
++  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
++    <ConfirmationsSetting value="2" id="Add" />
++  </component>
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.git.unshallow": "true",
+-    "git-widget-placeholder": "master",
+-    "nodejs_package_manager_path": "npm",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;FastAPI.personal_api.executor&quot;: &quot;Run&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
++}</component>
++  <component name="RunManager">
++    <configuration name="personal_api" type="Python.FastAPI">
++      <option name="appName" value="personal_api" />
++      <option name="file" value="$PROJECT_DIR$/main.py" />
++      <module name="personal_api" />
++      <option name="ENV_FILES" value="" />
++      <option name="INTERPRETER_OPTIONS" value="" />
++      <option name="PARENT_ENVS" value="true" />
++      <option name="SDK_HOME" value="$PROJECT_DIR$/.venv/bin/python" />
++      <option name="SDK_NAME" value="Python 3.12 (personal_api)" />
++      <option name="WORKING_DIRECTORY" value="" />
++      <option name="IS_MODULE_SDK" value="false" />
++      <option name="ADD_CONTENT_ROOTS" value="true" />
++      <option name="ADD_SOURCE_ROOTS" value="true" />
++      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
++      <EXTENSION ID="net.ashald.envfile">
++        <option name="IS_ENABLED" value="true" />
++        <option name="IS_SUBST" value="false" />
++        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
++        <option name="IS_IGNORE_MISSING_FILES" value="false" />
++        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
++        <ENTRIES>
++          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
++        </ENTRIES>
++      </EXTENSION>
++      <option name="launchJavascriptDebuger" value="false" />
++      <method v="2" />
++    </configuration>
++  </component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+       <set>
+@@ -44,8 +109,26 @@
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+       <updated>1732705647798</updated>
+-      <workItem from="1732705649087" duration="6000" />
++      <workItem from="1732705649087" duration="3892000" />
++      <workItem from="1732770246192" duration="802000" />
+     </task>
+     <servers />
+   </component>
++  <component name="TypeScriptGeneratedFilesManager">
++    <option name="version" value="3" />
++  </component>
++  <component name="Vcs.Log.Tabs.Properties">
++    <option name="TAB_STATES">
++      <map>
++        <entry key="MAIN">
++          <value>
++            <State />
++          </value>
++        </entry>
++      </map>
++    </option>
++  </component>
++  <component name="com.intellij.coverage.CoverageDataManagerImpl">
++    <SUITE FILE_PATH="coverage/personal_api$personal_api.coverage" NAME="personal_api Coverage Results" MODIFIED="1732706569537" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
++  </component>
+ </project>
+\ No newline at end of file
