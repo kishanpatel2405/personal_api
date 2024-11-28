@@ -6,10 +6,10 @@ class ErrorMessageCodes(str, Enum):
     BAD_REQUEST = "BAD_REQUEST"
 
 
-class Gender(int, Enum):
-    Male = "male"
-    Female = "female"
-
-
 class Currency(str, Enum):
     INR = "₹"
+
+
+class Ip_Type(Enum):
+    LOCAL = "local"
+    EXTERNAL = "external"

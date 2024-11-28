@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/personal_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/personal_api.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/enums.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/enums.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/misc.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/v1/endpoints/stock.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/schemas/v1/stock.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/router.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +24,7 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -111,6 +111,7 @@
       <updated>1732705647798</updated>
       <workItem from="1732705649087" duration="3892000" />
       <workItem from="1732770246192" duration="802000" />
+      <workItem from="1732777792941" duration="1444000" />
     </task>
     <servers />
   </component>
