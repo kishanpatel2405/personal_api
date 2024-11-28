@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/v1/endpoints/stock.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/v1/stock.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/router.py" afterDir="false" />
-    </list>
+    <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,6 +21,12 @@
   </component>
   <component name="Git.Settings">
     <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -112,6 +114,7 @@
       <workItem from="1732705649087" duration="3892000" />
       <workItem from="1732770246192" duration="802000" />
       <workItem from="1732777792941" duration="1444000" />
+      <workItem from="1732779586923" duration="2327000" />
     </task>
     <servers />
   </component>
