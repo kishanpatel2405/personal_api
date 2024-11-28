@@ -21,12 +21,6 @@
   </component>
   <component name="Git.Settings">
     <option name="PUSH_AUTO_UPDATE" value="true" />
-    <option name="PUSH_TAGS">
-      <GitPushTagMode>
-        <option name="argument" value="--tags" />
-        <option name="title" value="All" />
-      </GitPushTagMode>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -115,6 +109,7 @@
       <workItem from="1732770246192" duration="802000" />
       <workItem from="1732777792941" duration="1444000" />
       <workItem from="1732779586923" duration="2327000" />
+      <workItem from="1732786295018" duration="2965000" />
     </task>
     <servers />
   </component>
