@@ -16,12 +16,12 @@ from utils.enums import Ip_Type
 router = APIRouter()
 
 
-@router.get("/health", response_model=HealthResult, name="health")
+@router.get("/health", response_model=HealthResult, name="health", status_code=200)
 async def health():
     return HealthResult(is_alive=True)
 
 
-@router.get("/ip-address", response_model=IPAddressResponse)
+@router.get("/ip-address", response_model=IPAddressResponse, status_code=200 , name="ip-address")
 async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
     if ip_type == Ip_Type.EXTERNAL:
         ip_address = get_external_ip()
@@ -33,7 +33,7 @@ async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
     return IPAddressResponse(ip_address=ip_address, type=ip_type)
 
 
-@router.get("/health/metrics", response_model=SystemMetricsResponse, name="health-metrics")
+@router.get("/health/metrics", response_model=SystemMetricsResponse, name="health-metrics", status_code=200)
 async def get_system_metrics():
     cpu_usage = psutil.cpu_percent(interval=1)
     memory_info = psutil.virtual_memory()
@@ -42,7 +42,7 @@ async def get_system_metrics():
     return SystemMetricsResponse(cpu_usage=cpu_usage, memory_usage=memory_usage)
 
 
-@router.get("/health/uptime", response_model=UptimeResponse, name="system-uptime")
+@router.get("/health/uptime", response_model=UptimeResponse, name="system-uptime", status_code=200)
 async def get_uptime():
     # Get system uptime in seconds
     uptime_seconds = time.time() - psutil.boot_time()
@@ -50,7 +50,7 @@ async def get_uptime():
     return UptimeResponse(uptime=uptime)
 
 
-@router.get("/health/disk-usage", response_model=DiskUsageResponse, name="disk-usage")
+@router.get("/health/disk-usage", response_model=DiskUsageResponse, name="disk-usage", status_code=200)
 async def get_disk_usage():
     disk_usage = psutil.disk_usage('/')
     return DiskUsageResponse(
@@ -61,7 +61,7 @@ async def get_disk_usage():
     )
 
 
-@router.get("/health/network-status", response_model=NetworkStatsResponse, name="network-status")
+@router.get("/health/network-status", response_model=NetworkStatsResponse, name="network-status", status_code=200)
 async def get_network_stats():
     network_stats = psutil.net_io_counters(pernic=True)
     status = []

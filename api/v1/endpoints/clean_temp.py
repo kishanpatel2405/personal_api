@@ -6,7 +6,7 @@ from schemas.v1.clean_temp import CleanTempResponse
 router = APIRouter()
 
 
-@router.post("/clean-temp", response_model=CleanTempResponse)
+@router.post("/clean-temp", response_model=CleanTempResponse, name="clean_temp", status_code=200)
 async def clean_temp_files():
     """
     Cleans temporary files from the system temp directory.

@@ -46,7 +46,7 @@ def get_trade_signal() -> dict:
     }
 
 
-@router.get("/btc-usd-signal", response_model=TradeSignalResponse)
+@router.get("/btc-usd-signal", response_model=TradeSignalResponse, status_code=200, name="btc-usd-signal")
 async def get_btc_usd_signal() -> Any:
     signal_data = get_trade_signal()
     return TradeSignalResponse(
