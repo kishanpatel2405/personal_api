@@ -35,9 +35,9 @@ async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
 
 @router.get("/health/metrics", response_model=SystemMetricsResponse, name="health-metrics")
 async def get_system_metrics():
-    cpu_usage = psutil.cpu_percent(interval=1)  # CPU usage in percentage
+    cpu_usage = psutil.cpu_percent(interval=1)
     memory_info = psutil.virtual_memory()
-    memory_usage = memory_info.percent  # Memory usage in percentage
+    memory_usage = memory_info.percent
 
     return SystemMetricsResponse(cpu_usage=cpu_usage, memory_usage=memory_usage)
 
