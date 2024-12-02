@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class SystemHealthResponse(BaseModel):
     status: str
     uptime: str

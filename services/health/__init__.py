@@ -15,6 +15,7 @@ def get_local_ip() -> str:
         s.close()
     return local_ip
 
+
 def get_external_ip() -> str:
     try:
         response = requests.get("https://api.ipify.org?format=json")
