@@ -68,11 +68,11 @@ async def get_network_stats():
     for iface, io_stats in network_stats.items():
         status.append({
             "interface": iface,
-            "bytes_sent": io_stats.bytes_sent,
-            "bytes_recv": io_stats.bytes_recv,
-            "packets_sent": io_stats.packets_sent,
-            "packets_recv": io_stats.packets_recv,
-            "errin": io_stats.errin,
-            "errout": io_stats.errout
+            "bytes_sent_total": io_stats.bytes_sent,
+            "bytes_received_total": io_stats.bytes_recv,
+            "packets_sent_total": io_stats.packets_sent,
+            "packets_received_total": io_stats.packets_recv,
+            "receive_errors": io_stats.errin,
+            "transmit_errors": io_stats.errout
         })
     return NetworkStatsResponse(status=status)
