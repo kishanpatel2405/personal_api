@@ -61,7 +61,7 @@ async def get_disk_usage():
     )
 
 
-@router.get("/health/network-stats", response_model=NetworkStatsResponse, name="network-stats")
+@router.get("/health/network-status", response_model=NetworkStatsResponse, name="network-status")
 async def get_network_stats():
     network_stats = psutil.net_io_counters(pernic=True)
     status = []
