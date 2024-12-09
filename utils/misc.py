@@ -3,6 +3,7 @@ import json
 from calendar import timegm
 from datetime import datetime, timedelta
 from typing import Optional, Type, Union
+from pytz import timezone
 
 import jwt
 import tomlkit
@@ -182,7 +183,8 @@ class TokenBackend:
 
 
 def utc_to_ist(utc_obj):
-    ist_time = utc_obj + timedelta(hours=5, minutes=30)
+    ist = timezone("Asia/Kolkata")
+    ist_time = utc_obj.astimezone(ist)
     return ist_time
 
 
