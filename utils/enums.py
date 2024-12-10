@@ -24,3 +24,13 @@ class RoleEnum(str, Enum):
 class TokenType(int, Enum):
     EmailVerificationToken = 1
     ForgotPasswordToken = 2
+
+
+class Environment(str, Enum):
+    TEST = "test"
+    DEVELOPMENT = "development"
+    STAGING = "staging"
+    PRODUCTION = "production"
+
+    def __str__(self):
+        return self.value
