@@ -56,3 +56,18 @@ class StockSymbol(str, Enum):
     GBPUSD = "GBP/USD"  # British Pound to US Dollar
     USDJPY = "USD/JPY"  # US Dollar to Japanese Yen
     XAUUSD = "XAU/USD"  # Gold to US Dollar
+
+
+class GujaratCities(str, Enum):
+    AHMEDABAD = "Ahmedabad"
+    SURAT = "Surat"
+    VADODARA = "Vadodara"
+    RAJKOT = "Rajkot"
+    BHAVNAGAR = "Bhavnagar"
+    JAMNAGAR = "Jamnagar"
+    JUNAGADH = "Junagadh"
+    GANDHINAGAR = "Gandhinagar"
+    ANAND = "Anand"
+    MEHSANA = "Mehsana"
+    NAVSARI = "Navsari"
+    BHARUCH = "Bharuch"
