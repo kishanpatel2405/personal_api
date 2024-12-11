@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
 from typing import Dict, Any, Optional
-from services.weather import fetch_weather_data
+from services.weather import fetch_weather_data, fetch_historical_weather_data
 from utils.errors import ApiException
 from utils.enums import GujaratCities
 
@@ -38,13 +38,10 @@ async def get_weather(city: Optional[GujaratCities] = Query(None),
 
 @router.get("/historical-weather", response_model=Dict[str, Any], status_code=200)
 async def get_historical_weather(
-    city: str = Query(..., description="The city name to fetch historical weather data for", example="Ahmedabad"),
-    start_date: str = Query(..., description="Start date in YYYY-MM-DD format", example="2023-01-01"),
-    end_date: str = Query(..., description="End date in YYYY-MM-DD format", example="2023-01-05")
+        city: str = Query(..., description="The city name to fetch historical weather data for", example="Ahmedabad"),
+        start_date: str = Query(..., description="Start date in YYYY-MM-DD format", example="2023-01-01"),
+        end_date: str = Query(..., description="End date in YYYY-MM-DD format", example="2023-01-05")
 ):
-    """
-    Fetch historical weather data for the specified city and date range.
-    """
     try:
         historical_data = fetch_historical_weather_data(city, start_date, end_date)
     except ApiException as e:
@@ -58,5 +55,5 @@ async def get_historical_weather(
         "city": city,
         "start_date": start_date,
         "end_date": end_date,
-        "historical_data": historical_data,  # List of weather details for each day in the range
+        "historical_data": historical_data
     }
