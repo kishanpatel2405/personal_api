@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from random import random
 
 import requests
 from fastapi import HTTPException
@@ -12,9 +11,8 @@ def fetch_real_time_stock_data(stock_symbol: str) -> float:
     """
     Fetch the real-time price for a stock, cryptocurrency, or forex symbol.
     """
-    # Determine the appropriate Alpha Vantage function based on symbol type
-    if "/" in stock_symbol:  # Forex or Crypto (e.g., BTC/USD, EUR/USD)
-        if "BTC" in stock_symbol or "ETH" in stock_symbol:  # Crypto
+    if "/" in stock_symbol:
+        if "BTC" in stock_symbol or "ETH" in stock_symbol:
             function = "CURRENCY_EXCHANGE_RATE"
             from_currency, to_currency = stock_symbol.split("/")
         else:  # Forex
@@ -65,7 +63,7 @@ def fetch_historical_stock_data(stock_symbol: str, days: int):
             "function": "TIME_SERIES_DAILY",
             "symbol": stock_symbol,
             "apikey": ALPHA_VANTAGE_API_KEY,
-            "outputsize": "compact"  # Fetch last 100 data points
+            "outputsize": "compact"
         }
     )
 
@@ -79,7 +77,7 @@ def fetch_historical_stock_data(stock_symbol: str, days: int):
     time_series = data["Time Series (Daily)"]
     historical_prices = []
 
-    for date, stats in list(time_series.items())[:days]:  # Fetch last `days` data points
+    for date, stats in list(time_series.items())[:days]:
         historical_prices.append(float(stats["4. close"]))
 
     return historical_prices
@@ -89,22 +87,19 @@ def generate_stock_predictions(stock_symbol: str, current_price: float, days: in
     """
     Generate stock predictions based on historical data and trend analysis.
     """
-    # Fetch historical data
     historical_prices = fetch_historical_stock_data(stock_symbol, days)
 
-    # Simple prediction model: calculate the average change over the last N days
     price_changes = [historical_prices[i] - historical_prices[i - 1] for i in range(1, len(historical_prices))]
     avg_change = sum(price_changes) / len(price_changes) if price_changes else 0
 
     predictions = []
     for i in range(1, days + 1):
-        predicted_price = current_price + (avg_change * i)  # Use the average change to project price
+        predicted_price = current_price + (avg_change * i)
 
-        # Determine trading signal (Buy/Sell/Hold based on predicted price)
         signal = "Hold"
-        if predicted_price > current_price * 1.02:  # Price > 2% increase
+        if predicted_price > current_price * 1.02:
             signal = "Buy"
-        elif predicted_price < current_price * 0.98:  # Price > 2% decrease
+        elif predicted_price < current_price * 0.98:
             signal = "Sell"
 
         predicted_date = (datetime.now() + timedelta(days=i)).strftime("%Y-%m-%d")
