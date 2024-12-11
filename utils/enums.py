@@ -34,3 +34,25 @@ class Environment(str, Enum):
 
     def __str__(self):
         return self.value
+
+
+class StockSymbol(str, Enum):
+    """
+    Enum for valid stock, crypto, and forex trading symbols.
+    """
+    # Stocks
+    AAPL = "APPLE"
+    MSFT = "MICROSOFT"
+    GOOGL = "GOOGLE"
+    AMZN = "AMAZON"
+    TSLA = "TESLA"
+
+    # Cryptocurrencies
+    BTCUSD = "BTC/USD"  # Bitcoin to USD
+    ETHUSD = "ETH/USD"  # Ethereum to USD
+
+    # Forex pairs
+    EURUSD = "EUR/USD"  # Euro to US Dollar
+    GBPUSD = "GBP/USD"  # British Pound to US Dollar
+    USDJPY = "USD/JPY"  # US Dollar to Japanese Yen
+    XAUUSD = "XAU/USD"  # Gold to US Dollar

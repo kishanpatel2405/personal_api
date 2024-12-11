@@ -21,7 +21,7 @@ async def health():
     return HealthResult(is_alive=True)
 
 
-@router.get("/ip-address", response_model=IPAddressResponse, status_code=200 , name="ip-address")
+@router.get("/ip-address", response_model=IPAddressResponse, status_code=200, name="ip-address")
 async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
     if ip_type == Ip_Type.EXTERNAL:
         ip_address = get_external_ip()

@@ -1,35 +1,25 @@
 from pydantic import BaseModel, Field
 from typing import List
-
+from utils.enums import StockSymbol
 
 class StockInsightRequest(BaseModel):
-    stock_symbol: str = Field(..., description="Stock symbol, e.g., AAPL")
-    days: int = Field(..., description="Number of days to predict")
+    stock_symbol: StockSymbol = Field(..., description="Stock symbol", example="AAPL")
+    days: int = Field(..., ge=1, le=30, description="Number of days for prediction", example=5)
 
 
 class StockInsightResponse(BaseModel):
-    stock_symbol: str
+    stock_symbol: StockSymbol
     current_price: float
-    predictions: List[float]
+    predictions: List[dict]  # Example: {"date": "2023-12-01", "predicted_price": 150.0}
     data_source: str
-
-
-class RealTimeStockDataRequest(BaseModel):
-    stock_symbol: str = Field(..., description="Stock symbol, e.g., AAPL")
 
 
 class RealTimeStockDataResponse(BaseModel):
-    stock_symbol: str
+    stock_symbol: StockSymbol
     current_price: float
     data_source: str
 
 
-class StockPredictionRequest(BaseModel):
-    stock_symbol: str = Field(..., description="Stock symbol, e.g., AAPL")
-    current_price: float = Field(..., description="Current stock price")
-    days: int = Field(..., description="Number of days to predict")
-
-
 class StockPredictionResponse(BaseModel):
-    stock_symbol: str
-    predictions: List[float]
+    stock_symbol: StockSymbol
+    predictions: List[dict]  # Example: {"date": "2023-12-01", "predicted_price": 150.0}

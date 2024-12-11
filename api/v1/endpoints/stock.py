@@ -1,58 +1,65 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from schemas.v1.stock import (
     StockInsightRequest,
     StockInsightResponse,
-    RealTimeStockDataRequest,
     RealTimeStockDataResponse,
-    StockPredictionRequest,
     StockPredictionResponse,
+    StockSymbol,
 )
 from services.stock import fetch_real_time_stock_data, generate_stock_predictions
 
 router = APIRouter()
 
 
-@router.post("/stock-insight", response_model=StockInsightResponse, status_code=200, name="stock_insight")
-async def get_stock_insight(request: StockInsightRequest):
-
+@router.get("/real-time-data", response_model=RealTimeStockDataResponse, status_code=200)
+async def get_real_time_stock_data(stock_symbol: StockSymbol):
+    """
+    Fetch the current stock price for a given symbol.
+    """
     try:
-        current_price = fetch_real_time_stock_data(request.stock_symbol.upper())
-    except HTTPException as e:
-        raise e
-
-    predictions = generate_stock_predictions(current_price, request.days)
-
-    response = StockInsightResponse(
-        stock_symbol=request.stock_symbol.upper(),
-        current_price=current_price,
-        predictions=predictions,
-        data_source="Alpha Vantage"
-    )
-    return response
-
-
-@router.post("/real-time-data", response_model=RealTimeStockDataResponse, status_code=200, name="real_time_data")
-async def get_real_time_stock_data(request: RealTimeStockDataRequest):
-    try:
-        current_price = fetch_real_time_stock_data(request.stock_symbol.upper())
+        current_price = fetch_real_time_stock_data(stock_symbol)
     except HTTPException as e:
         raise e
 
     return RealTimeStockDataResponse(
-        stock_symbol=request.stock_symbol.upper(),
+        stock_symbol=stock_symbol,
         current_price=current_price,
         data_source="Alpha Vantage"
     )
 
 
-@router.post("/stock-predictions", response_model=StockPredictionResponse, status_code=200, name="stock_predictions")
-async def get_stock_predictions(request: StockPredictionRequest):
+@router.get("/stock-predictions", response_model=StockPredictionResponse, status_code=200)
+async def get_stock_predictions(
+        stock_symbol: StockSymbol,
+        current_price: float = Query(..., description="The current price of the stock", example=150.0),
+        days: int = Query(..., ge=1, le=30, description="Number of days to predict", example=5)
+):
     """
-    Generate stock predictions based on current price.
+    Generate stock predictions based on current price and historical data.
     """
-    predictions = generate_stock_predictions(request.current_price, request.days)
+    predictions = generate_stock_predictions(stock_symbol, current_price, days)
 
     return StockPredictionResponse(
-        stock_symbol=request.stock_symbol.upper(),
+        stock_symbol=stock_symbol,
         predictions=predictions
+    )
+
+
+@router.post("/stock-insight", response_model=StockInsightResponse, status_code=200)
+async def get_stock_insight(request: StockInsightRequest):
+    """
+    Fetch stock insights including real-time price and predictions with trading signals.
+    """
+    try:
+        current_price = fetch_real_time_stock_data(request.stock_symbol)
+    except HTTPException as e:
+        raise e
+
+    predictions = generate_stock_predictions(request.stock_symbol, current_price, request.days)
+
+    return StockInsightResponse(
+        stock_symbol=request.stock_symbol,
+        current_price=current_price,
+        predictions=predictions,
+        data_source="Alpha Vantage"
     )
