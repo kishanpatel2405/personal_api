@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from typing import Dict, Any
 from services.weather import fetch_weather_data
+from utils.errors import ApiException
 
 router = APIRouter()
 
@@ -9,8 +10,8 @@ router = APIRouter()
 async def get_weather(city: str = Query(..., description="The city name to fetch weather for", example="Ahmedabad")):
     try:
         weather_data = fetch_weather_data(city)
-    except HTTPException as e:
-        raise e
+    except ApiException as e:
+        raise ApiException(msg=e.msg, error_code=e.error_code, status_code=e.status_code)
 
     return {
         "city": weather_data["city"],
