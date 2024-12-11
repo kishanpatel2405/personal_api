@@ -6,7 +6,7 @@ router = APIRouter()
 
 
 @router.get("/weather", response_model=Dict[str, Any], status_code=200)
-async def get_weather(city: str = Query(..., description="The city name to fetch weather for", example="London")):
+async def get_weather(city: str = Query(..., description="The city name to fetch weather for", example="Ahmedabad")):
     try:
         weather_data = fetch_weather_data(city)
     except HTTPException as e:
