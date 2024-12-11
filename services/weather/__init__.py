@@ -63,7 +63,6 @@ def fetch_weather_data(city: str):
 
 
 def fetch_historical_weather_data(city: str, start_date: str, end_date: str):
-    # Convert start and end date to Unix timestamp (seconds)
     try:
         start_timestamp = int(datetime.strptime(start_date, "%Y-%m-%d").timestamp())
         end_timestamp = int(datetime.strptime(end_date, "%Y-%m-%d").timestamp())
@@ -74,13 +73,11 @@ def fetch_historical_weather_data(city: str, start_date: str, end_date: str):
             status_code=400
         )
 
-    # Fetch city coordinates (latitude and longitude) using OpenWeatherMap
     city_coords = fetch_city_coordinates(city)
 
-    # Prepare data for historical weather for each day between start and end dates
     historical_weather_data = []
 
-    for timestamp in range(start_timestamp, end_timestamp, 86400):  # 86400 seconds in a day
+    for timestamp in range(start_timestamp, end_timestamp, 86400):
         weather_data = get_weather_for_date(city_coords, timestamp)
         historical_weather_data.append(weather_data)
 
@@ -88,7 +85,6 @@ def fetch_historical_weather_data(city: str, start_date: str, end_date: str):
 
 
 def fetch_city_coordinates(city: str):
-    # Use OpenWeatherMap's current weather API to fetch city coordinates (latitude & longitude)
     geocode_url = "http://api.openweathermap.org/data/2.5/weather"
     params = {
         "q": city,
@@ -112,11 +108,10 @@ def fetch_city_coordinates(city: str):
             status_code=404
         )
 
-    return data["coord"]  # Returns latitude and longitude
+    return data["coord"]
 
 
 def get_weather_for_date(coords, timestamp):
-    # Fetch historical weather for a specific timestamp using OpenWeatherMap's One Call API
     url = OPENWEATHERMAP_HISTORICAL_BASE_URL
     params = {
         "lat": coords["lat"],
@@ -143,10 +138,9 @@ def get_weather_for_date(coords, timestamp):
             status_code=404
         )
 
-    # Extract relevant weather data for the specific date
     weather_info = {
         "date": datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d'),
-        "temperature": data["current"]["temp"],  # Temperature in Celsius
+        "temperature": data["current"]["temp"],
         "humidity": data["current"]["humidity"],
         "pressure": data["current"]["pressure"],
         "weather_description": data["current"]["weather"][0]["description"],
