@@ -1,19 +1,14 @@
+import StockPrediction
 import requests
 from fastapi import HTTPException
 from datetime import datetime, timedelta
 import random
 
-from schemas.v1.stock import StockPrediction
-
-# Real-time stock data source (Alpha Vantage in this example)
 ALPHA_VANTAGE_API_KEY = "RROYVFSHLQKFO5RV"
 ALPHA_VANTAGE_BASE_URL = "https://www.alphavantage.co/query"
 
 
 def fetch_real_time_stock_data(stock_symbol: str) -> float:
-    """
-    Fetch the real-time stock price using Alpha Vantage API.
-    """
     response = requests.get(
         ALPHA_VANTAGE_BASE_URL,
         params={
@@ -33,12 +28,8 @@ def fetch_real_time_stock_data(stock_symbol: str) -> float:
 
 
 def generate_stock_predictions(current_price: float, days: int) -> list:
-    """
-    Generate mock predictions for the next N days.
-    """
     predictions = []
     for i in range(1, days + 1):
-        # Generate random price changes
         change = random.uniform(-5, 5)
         predicted_price = round(current_price + change, 2)
         predicted_date = (datetime.now() + timedelta(days=i)).strftime("%Y-%m-%d")
