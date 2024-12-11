@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/v1/endpoints/weather.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/weather/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/router.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,6 +166,7 @@
       <workItem from="1733739577986" duration="308000" />
       <workItem from="1733806141793" duration="1641000" />
       <workItem from="1733807796895" duration="14000" />
+      <workItem from="1733896613820" duration="3820000" />
     </task>
     <servers />
   </component>
@@ -192,7 +195,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/personal_api$launcher.coverage" NAME="launcher Coverage Results" MODIFIED="1733806613729" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/personal_api$launcher.coverage" NAME="launcher Coverage Results" MODIFIED="1733897190358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/personal_api$personal_api.coverage" NAME="personal_api Coverage Results" MODIFIED="1732706569537" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
