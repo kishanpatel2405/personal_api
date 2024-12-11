@@ -4,6 +4,7 @@ from services.weather import fetch_weather_data
 
 router = APIRouter()
 
+
 @router.get("/weather", response_model=Dict[str, Any], status_code=200)
 async def get_weather(city: str = Query(..., description="The city name to fetch weather for", example="London")):
     try:

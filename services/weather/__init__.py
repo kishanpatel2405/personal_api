@@ -7,7 +7,6 @@ OPENWEATHERMAP_BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 
 def fetch_weather_data(city: str):
-
     response = requests.get(
         OPENWEATHERMAP_BASE_URL,
         params={
