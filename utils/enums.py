@@ -6,10 +6,6 @@ class ErrorMessageCodes(str, Enum):
     BAD_REQUEST = "BAD_REQUEST"
 
 
-class Currency(str, Enum):
-    INR = "₹"
-
-
 class Ip_Type(Enum):
     LOCAL = "local"
     EXTERNAL = "external"
@@ -37,9 +33,6 @@ class Environment(str, Enum):
 
 
 class StockSymbol(str, Enum):
-    """
-    Enum for valid stock, crypto, and forex trading symbols.
-    """
     # Stocks
     AAPL = "APPLE"
     MSFT = "MICROSOFT"
