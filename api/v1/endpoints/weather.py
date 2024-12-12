@@ -7,7 +7,7 @@ from utils.enums import GujaratCities
 router = APIRouter()
 
 
-@router.get("/weather", response_model=Dict[str, Any], status_code=200)
+@router.get("/weather", name="get live weather", response_model=Dict[str, Any], status_code=200)
 async def get_weather(city: Optional[GujaratCities] = Query(None),
                       custom_city: Optional[str] = Query(None),
                       ):
@@ -36,7 +36,7 @@ async def get_weather(city: Optional[GujaratCities] = Query(None),
     }
 
 
-@router.get("/historical-weather", response_model=Dict[str, Any], status_code=200)
+@router.get("/historical-weather", name="History of Weather", response_model=Dict[str, Any], status_code=200)
 async def get_historical_weather(
         city: str = Query(..., description="The city name to fetch historical weather data for", example="Ahmedabad"),
         start_date: str = Query(..., description="Start date in YYYY-MM-DD format", example="2023-01-01"),
