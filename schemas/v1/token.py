@@ -97,9 +97,6 @@ class _Token:
         # claim.  We don't want any zombie tokens walking around.
         self.check_exp()
 
-        # If the defaults are not None then we should enforce the
-        # requirement of these settings.As above, the spec labels
-        # these as optional.
         if JTI_CLAIM is not None and JTI_CLAIM not in self.payload:
             raise TokenError("Token has no id")
 

@@ -180,14 +180,3 @@ class TokenBackend:
             raise TokenBackendError("Invalid algorithm specified") from ex
         except InvalidTokenError as ex:
             raise TokenBackendError("Token is invalid or expired") from ex
-
-
-def utc_to_ist(utc_obj):
-    ist = timezone("Asia/Kolkata")
-    ist_time = utc_obj.astimezone(ist)
-    return ist_time
-
-
-async def create_hash(string):
-    hashed_string = hashlib.sha512(string.encode("utf-8")).hexdigest()
-    return hashed_string
