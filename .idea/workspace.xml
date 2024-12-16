@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/api/v1/endpoints/weather.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/endpoints/weather.py" afterDir="false" />
-    </list>
+    <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -166,7 +164,7 @@
       <workItem from="1733807796895" duration="14000" />
       <workItem from="1733896613820" duration="3820000" />
       <workItem from="1733915771062" duration="2679000" />
-      <workItem from="1733991843185" duration="662000" />
+      <workItem from="1733991843185" duration="731000" />
     </task>
     <servers />
   </component>
