@@ -7,7 +7,7 @@ from utils.enums import GujaratCities
 router = APIRouter()
 
 
-@router.get("/weather", name="get live weather", response_model=Dict[str, Any], status_code=200)
+@router.get("", name="get live weather", response_model=Dict[str, Any], status_code=200)
 async def get_weather(city: Optional[GujaratCities] = Query(None),
                       custom_city: Optional[str] = Query(None),
                       ):
