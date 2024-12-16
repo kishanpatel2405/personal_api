@@ -36,6 +36,3 @@ class Config(BaseSettings):
 
 
 config = Config()
-
-
-
