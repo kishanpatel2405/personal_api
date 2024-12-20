@@ -64,6 +64,3 @@ class GujaratCities(str, Enum):
     MEHSANA = "Mehsana"
     NAVSARI = "Navsari"
     BHARUCH = "Bharuch"
-
-
-
