@@ -91,3 +91,8 @@ class TokenBackend:
 
         self.leeway = leeway
         self.json_encoder = json_encoder
+
+
+def utc_to_ist(utc_obj):
+    ist_time = utc_obj + timedelta(hours=5, minutes=30)
+    return ist_time
