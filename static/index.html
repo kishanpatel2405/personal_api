@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Speed Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .test-container {
+            display: inline-block;
+            text-align: left;
+        }
+        #startButton, #submitButton {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #typedText {
+            width: 100%;
+            height: 100px;
+            font-size: 18px;
+            margin-top: 10px;
+            padding: 10px;
+            resize: none;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Typing Speed Test</h1>
+
+    <div class="test-container">
+        <div id="testTextContainer">
+            <p id="testText">Click "Start Test" to begin.</p>
+        </div>
+        <textarea id="typedText" placeholder="Start typing here..." disabled></textarea>
+        <div>
+            <button id="startButton">Start Test</button>
+            <button id="submitButton" disabled>Submit Test</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let testId = null;
+        let startTime = null;
+        let timeLimit = 30;  // Default 30 seconds
+
+        // Start button event listener
+        document.getElementById('startButton').addEventListener('click', async () => {
+            const response = await fetch(`/typing-speed-test/start?time_limit=${timeLimit}`, {
+                method: 'GET',
+            });
+            const data = await response.json();
+            testId = data.test_id;
+            startTime = data.start_time;
+
+            document.getElementById('testText').textContent = data.text;
+            document.getElementById('typedText').disabled = false;
+            document.getElementById('submitButton').disabled = false;
+            document.getElementById('result').textContent = '';  // Clear previous results
+        });
+
+        // Submit button event listener
+        document.getElementById('submitButton').addEventListener('click', async () => {
+            const typedText = document.getElementById('typedText').value;
+
+            if (!typedText.trim()) {
+                alert('Please type the text before submitting.');
+                return;
+            }
+
+            const response = await fetch('/typing-speed-test/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    test_id: testId,
+                    typed_text: typedText
+                })
+            });
+            const data = await response.json();
+
+            document.getElementById('result').textContent = `
+                Elapsed Time: ${data.elapsed_time_seconds.toFixed(2)} seconds
+                \nWords Per Minute (WPM): ${data.wpm.toFixed(2)}
+                \nAccuracy: ${data.accuracy.toFixed(2)}%
+            `;
+
+            // Disable typing area and submit button after submission
+            document.getElementById('typedText').disabled = true;
+            document.getElementById('submitButton').disabled = true;
+        });
+    </script>
+
+</body>
+</html>

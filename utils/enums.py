@@ -64,3 +64,10 @@ class GujaratCities(str, Enum):
     MEHSANA = "Mehsana"
     NAVSARI = "Navsari"
     BHARUCH = "Bharuch"
+
+
+class TimeLimit(int, Enum):
+    thirty_seconds = 30  # 30 seconds
+    one_minute = 60      # 1 minute
+    two_minutes = 120    # 2 minutes
+    five_minutes = 300   # 5 minutes
