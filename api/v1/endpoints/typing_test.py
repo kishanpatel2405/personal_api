@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import JSONResponse  # Changed from HTMLResponse to JSONResponse
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from enum import Enum
 import random
 import time
 
@@ -13,7 +12,6 @@ router = APIRouter()
 
 router.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Sample texts for typing tests
 typing_texts = [
     "The quick brown fox jumps over the lazy dog.",
     "Practice makes a man perfect.",
