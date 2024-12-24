@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Query
+
 from schemas.v1.stock import (
     StockInsightRequest,
     StockInsightResponse,

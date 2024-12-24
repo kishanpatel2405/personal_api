@@ -1,5 +1,8 @@
+import time
+
 import psutil
 from fastapi import APIRouter
+
 from schemas.v1.health import (
     HealthResult,
     IPAddressResponse,
@@ -9,8 +12,6 @@ from schemas.v1.health import (
     NetworkStatsResponse
 )
 from services.health import get_external_ip, get_local_ip
-
-import time
 from utils.enums import Ip_Type
 
 router = APIRouter()

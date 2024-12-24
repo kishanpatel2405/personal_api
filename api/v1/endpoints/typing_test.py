@@ -1,9 +1,9 @@
-from fastapi import APIRouter, HTTPException
-from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
 import random
 import time
 
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from starlette.responses import HTMLResponse
 
 from utils.enums import TimeLimit
