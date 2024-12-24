@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="" />
+    <list default="true" id="ae586fd5-6392-489b-ae65-9da77ebdf048" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/endpoints/weather.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/endpoints/weather.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/crypto/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/crypto/__init__.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,6 +61,8 @@
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
     "FastAPI.personal_api.executor": "Run",
+    "HTTP Request.test_main | #1.executor": "Run",
+    "HTTP Request.test_main | #2.executor": "Run",
     "Python.launcher.executor": "Run",
     "Python.rough_page.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -78,7 +84,13 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.launcher">
+  <component name="RunManager" selected="HTTP Request.test_main | #2">
+    <configuration name="test_main | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/test_main.http" executionIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="test_main | #2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/test_main.http" executionIdentifier="#2" index="2" runType="Run single request">
+      <method v="2" />
+    </configuration>
     <configuration name="launcher" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="personal_api" />
       <option name="ENV_FILES" value="" />
@@ -131,6 +143,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="HTTP Request.test_main | #2" />
+        <item itemvalue="HTTP Request.test_main | #1" />
         <item itemvalue="Python.launcher" />
       </list>
     </recent_temporary>
@@ -174,6 +188,7 @@
       <workItem from="1734946465311" duration="1382000" />
       <workItem from="1734950545683" duration="625000" />
       <workItem from="1734957398149" duration="4015000" />
+      <workItem from="1735034668169" duration="602000" />
     </task>
     <servers />
   </component>
