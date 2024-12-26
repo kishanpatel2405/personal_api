@@ -22,3 +22,10 @@ for i in range(num):
     a, b = b, a + b
 
 print(fibonacci_series)
+
+
+
+# find ascii value
+a = 'g'
+
+print(ord(a))
