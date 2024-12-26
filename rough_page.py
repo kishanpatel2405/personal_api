@@ -21,6 +21,4 @@ for i in range(num):
     fibonacci_series.append(a)
     a, b = b, a + b
 
-
 print(fibonacci_series)
-
