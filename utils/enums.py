@@ -41,14 +41,14 @@ class StockSymbol(str, Enum):
     TSLA = "TESLA"
 
     # Cryptocurrencies
-    BTCUSD = "BTC/USD"  # Bitcoin to USD
-    ETHUSD = "ETH/USD"  # Ethereum to USD
+    BTCUSD = "BTC/USD"
+    ETHUSD = "ETH/USD"
 
-    # Forex pairs
-    EURUSD = "EUR/USD"  # Euro to US Dollar
-    GBPUSD = "GBP/USD"  # British Pound to US Dollar
-    USDJPY = "USD/JPY"  # US Dollar to Japanese Yen
-    XAUUSD = "XAU/USD"  # Gold to US Dollar
+    # Forex
+    EURUSD = "EUR/USD"
+    GBPUSD = "GBP/USD"
+    USDJPY = "USD/JPY"
+    XAUUSD = "XAU/USD"
 
 
 class GujaratCities(str, Enum):
