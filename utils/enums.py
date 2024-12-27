@@ -75,5 +75,3 @@ class TimeLimit(int, Enum):
 
 class Currency(str, Enum):
     INR = "₹"
-
-
