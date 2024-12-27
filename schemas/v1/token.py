@@ -37,12 +37,9 @@ class _Token:
         self.token = token
         self.current_time = aware_utcnow()
 
-        # Set up token
         if token is not None:
-            # An encoded token was provided
             token_backend = self.get_token_backend()
 
-            # Decode token
             try:
                 self.payload = token_backend.decode(token, verify=verify)
             except TokenBackendError:
@@ -51,14 +48,11 @@ class _Token:
             if verify:
                 self.verify()
         else:
-            # New token.  Skip all the verification steps.
             self.payload = {TOKEN_TYPE_CLAIM: self.token_type}
 
-            # Set "exp" and "iat" claims with default value
             self.set_exp(from_time=self.current_time, lifetime=self.lifetime)
             self.set_iat(at_time=self.current_time)
 
-            # Set "jti" claim
             self.set_jti()
 
     def __repr__(self):
