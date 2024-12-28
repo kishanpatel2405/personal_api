@@ -160,3 +160,9 @@ def get_user_by_verification_token(db: Session, token: str):
 async def get_maintenance_status(db: Session):
     maintenance_status = db.query(UnderMaintenance).first()
     return maintenance_status
+
+
+
+
+
+
