@@ -1,0 +1,56 @@
+Index: celery_tasks/tasks.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import sib_api_v3_sdk\nfrom celery import shared_task\n\nfrom config import config\nfrom services.authentication import get_name_from_email\n\nconfiguration = sib_api_v3_sdk.Configuration()\nconfiguration.api_key[\"api-key\"] = config.SENDINBLUE_API_KEY\n\nsendinblue_api_client = sib_api_v3_sdk.ApiClient(configuration)\n\n\n@shared_task(\n    bind=True,\n    autoretry_for=(Exception,),\n    retry_backoff=True,\n    retry_kwargs={\"max_retries\": 5},\n)\ndef task_send_welcome_mail(self, name: str, email: str):\n    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=[{\"name\": name, \"email\": email}], template_id=5, params={\"name\": name})\n    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)\n\n\n@shared_task(\n    bind=True,\n    autoretry_for=(Exception,),\n    retry_backoff=True,\n    retry_kwargs={\"max_retries\": 5},\n)\ndef verification_mail(self, email: str, token: str):\n    name = get_name_from_email(email)\n    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(\n        to=[{\"name\": name, \"email\": email}],\n        template_id=config.TEMPLATE_ID_OF_EMAIL_STRUCTURE_FOR_USER_EMAIL_VERIFICATION,\n        params={\"name\": name, \"verification_link\": token},\n    )\n    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)\n\n\n@shared_task(\n    bind=True,\n    autoretry_for=(Exception,),\n    retry_backoff=True,\n    retry_kwargs={\"max_retries\": 5},\n)\ndef task_test(self, email: str):\n    result = get_name_from_email(email)\n    print(result)\n\n\n@shared_task(\n    bind=True,\n    autoretry_for=(Exception,),\n    retry_backoff=True,\n    retry_kwargs={\"max_retries\": 5},\n)\ndef forgot_password_mail(self, email: str, token: str):\n    name = get_name_from_email(email)\n    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(\n        to=[{\"name\": name, \"email\": email}],\n        template_id=config.TEMPLATE_ID_OF_EMAIL_STRUCTURE_FOR_FORGOT_PASSWORD_EMAIL_VERIFICATION,\n        params={\"name\": name, \"reset_password_link\": token},\n    )\n    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)\n@shared_task(\n    bind=True,\n    autoretry_for=(Exception,),\n    retry_backoff=True,\n    retry_kwargs={\"max_retries\": 5},\n)\ndef send_credit_notification(\n    self,\n    first_name: str,\n    last_name: str,\n    company_name: str,\n    company_email: str,\n    subject: str,\n    previous_credit: str,\n    credit_change: str,\n    new_credit: str,\n    credit_type: str,\n):\n    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(\n        to=[{\"name\": f\"{first_name} {last_name}\", \"email\": company_email}],\n        subject=subject,\n        template_id=config.TEMPLATE_ID_OF_CREDIT_UPDATE_EMAIL_TEMPLATE,\n        params={\n            \"first_name\": first_name,\n            \"last_name\": last_name,\n            \"company_name\": company_name,\n            \"subject\": subject,\n            \"previous_credit\": previous_credit,\n            \"credit_change\": credit_change,\n            \"new_credit\": new_credit,\n            \"credit_type\": credit_type,\n        },\n    )\n\n    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/celery_tasks/tasks.py b/celery_tasks/tasks.py
+--- a/celery_tasks/tasks.py	(revision 0a4b0ef0a64fc9c866bb36ad848579996c90c1e4)
++++ b/celery_tasks/tasks.py	(date 1735562082380)
+@@ -17,7 +17,8 @@
+     retry_kwargs={"max_retries": 5},
+ )
+ def task_send_welcome_mail(self, name: str, email: str):
+-    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=[{"name": name, "email": email}], template_id=5, params={"name": name})
++    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=[{"name": name, "email": email}], template_id=5,
++                                                   params={"name": name})
+     sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)
+ 
+ 
+@@ -62,6 +63,8 @@
+         params={"name": name, "reset_password_link": token},
+     )
+     sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)
++
++
+ @shared_task(
+     bind=True,
+     autoretry_for=(Exception,),
+@@ -69,16 +72,16 @@
+     retry_kwargs={"max_retries": 5},
+ )
+ def send_credit_notification(
+-    self,
+-    first_name: str,
+-    last_name: str,
+-    company_name: str,
+-    company_email: str,
+-    subject: str,
+-    previous_credit: str,
+-    credit_change: str,
+-    new_credit: str,
+-    credit_type: str,
++        self,
++        first_name: str,
++        last_name: str,
++        company_name: str,
++        company_email: str,
++        subject: str,
++        previous_credit: str,
++        credit_change: str,
++        new_credit: str,
++        credit_type: str,
+ ):
+     send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+         to=[{"name": f"{first_name} {last_name}", "email": company_email}],
