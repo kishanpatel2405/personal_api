@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
+from starlette.middleware.cors import CORSMiddleware
 
 from api.v1.router import api_router as api_v1_router
 from celery_utils import create_celery
@@ -12,7 +12,6 @@ from utils.errors import ApiException
 from utils.misc import get_project_meta
 
 app = FastAPI()
-
 
 
 def get_app() -> FastAPI:
