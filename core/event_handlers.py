@@ -1,12 +1,10 @@
 import logging
 from typing import Callable
 
-import boto3
 import sib_api_v3_sdk
 from fastapi import FastAPI
 from sqlalchemy import URL, create_engine
 from sqlalchemy.orm import sessionmaker
-
 
 from utils.misc import TokenBackend
 
@@ -15,7 +13,6 @@ logger = logging.getLogger(__name__)
 
 async def _startup(app: FastAPI) -> None:
     configuration = sib_api_v3_sdk.Configuration()
-    configuration.api_key["api-key"] = app.config.SENDINBLUE_API_KEY
 
     engine = create_engine(
         URL.create(
