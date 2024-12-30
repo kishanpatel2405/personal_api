@@ -23,6 +23,9 @@ class Config(BaseSettings):
 
     PROJECT_NAME: str
 
+    DB_POOL_SIZE: int
+    DB_MAX_OVERFLOW: int
+
     POSTGRES_HOST: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str

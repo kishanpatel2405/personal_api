@@ -1,4 +1,3 @@
-
 import logging
 from typing import Callable
 
@@ -7,6 +6,8 @@ import sib_api_v3_sdk
 from fastapi import FastAPI
 from sqlalchemy import URL, create_engine
 from sqlalchemy.orm import sessionmaker
+
+
 from utils.misc import TokenBackend
 
 logger = logging.getLogger(__name__)
@@ -25,11 +26,8 @@ async def _startup(app: FastAPI) -> None:
             port=5432,
             database=app.config.POSTGRES_DB,
         ).render_as_string(hide_password=False),
-        # pool_size=300,
-        # max_overflow=500,
-        # pool_timeout=600,
-        # pool_recycle=18000,
-        # echo=False,
+        pool_size=app.config.DB_POOL_SIZE,  # Database connections in the pool.
+        max_overflow=app.config.DB_MAX_OVERFLOW,  # Additional connections beyond the pool size.
     )
     app.db_session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     app.token_backend = TokenBackend("HS256", app.config.SECRET_KEY, "", None, None, None, 0, None)
