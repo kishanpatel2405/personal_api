@@ -1,7 +1,8 @@
+import logging
+
 from fastapi import FastAPI
 from fastapi_pagination import add_pagination
 from starlette.middleware.cors import CORSMiddleware
-from starlette.requests import Request
 
 from api.v1.router import api_router as api_v1_router
 from celery_utils import create_celery
@@ -11,7 +12,6 @@ from core.event_handlers import start_app_handler, stop_app_handler
 from utils.enums import Environment
 from utils.errors import ApiException
 from utils.misc import get_project_meta
-import logging
 
 # Initialize logger
 logger = logging.getLogger(__name__)

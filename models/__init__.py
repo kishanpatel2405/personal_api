@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column, declarative_base
 
 Base = declarative_base()
 
+
 class Country(Base):
     __tablename__ = "country_data"
 
