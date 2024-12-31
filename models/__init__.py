@@ -1,8 +1,7 @@
 from sqlalchemy import Integer, String, ForeignKey
-from sqlalchemy.orm import relationship, Mapped, mapped_column, declarative_base
+from sqlalchemy.orm import Mapped, mapped_column, declarative_base
 
 Base = declarative_base()
-
 
 
 class Country(Base):
@@ -27,6 +26,7 @@ class State(Base):
     name: Mapped[str] = mapped_column(String, index=True)
     state_code: Mapped[str] = mapped_column(String, index=True)
     country_id: Mapped[int] = mapped_column(Integer, ForeignKey("country_data.id"))
+
 
 class City(Base):
     __tablename__ = "city_data"
