@@ -13,21 +13,17 @@ from utils.enums import Environment
 from utils.errors import ApiException
 from utils.misc import get_project_meta
 
-# Initialize logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-# Function to initialize the app
 def get_app() -> FastAPI:
     """Creates and configures the FastAPI application."""
 
     pkg_meta = get_project_meta("pyproject.toml")
 
-    # Setup dynamic docs URL based on environment
     docs_url = None if config.ENVIRONMENT == Environment.PRODUCTION else "/docs"
 
-    # Initialize FastAPI app with dynamic settings
     fast_app = FastAPI(
         title=config.PROJECT_NAME,
         version=pkg_meta["version"],
@@ -36,10 +32,8 @@ def get_app() -> FastAPI:
         docs_url=docs_url,
     )
 
-    # Add pagination support globally
     add_pagination(fast_app)
 
-    # CORS Middleware to allow frontend to interact
     if config.BACKEND_CORS_ORIGINS:
         fast_app.add_middleware(
             CORSMiddleware,
@@ -49,17 +43,13 @@ def get_app() -> FastAPI:
             allow_headers=["*"],
         )
 
-    # Include API v1 router for versioned endpoints
     fast_app.include_router(api_v1_router, prefix="/api/v1")
 
-    # Exception Handling
     fast_app.add_exception_handler(ApiException, api_exception_handler)
 
-    # Start and stop app event handlers (startup/shutdown)
     fast_app.add_event_handler("startup", start_app_handler(fast_app))
     fast_app.add_event_handler("shutdown", stop_app_handler(fast_app))
 
-    # Attach configuration and Celery instance to the app
     fast_app.config = config
     fast_app.celery_app = create_celery()
 
@@ -68,8 +58,6 @@ def get_app() -> FastAPI:
     return fast_app
 
 
-# Create the FastAPI app instance
 app = get_app()
 
-# Celery instance for background tasks
 celery = app.celery_app
