@@ -98,8 +98,3 @@ async def get_xau_usd_chart():
     chart_html = generate_candlestick_chart(ohlc_data)
 
     return HTMLResponse(content=chart_html)
-
-
-
-
-
