@@ -61,3 +61,5 @@ def get_app() -> FastAPI:
 app = get_app()
 
 celery = app.celery_app
+
+
