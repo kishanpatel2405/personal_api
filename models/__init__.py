@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import Integer, String, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship, Mapped, mapped_column, declarative_base
 
@@ -42,6 +44,7 @@ class City(Base):
 
     state: Mapped["State"] = relationship("State", back_populates="cities")
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -63,4 +66,3 @@ class User(Base):
     country = relationship("Country", back_populates="users")
     state = relationship("State", back_populates="users")
     city = relationship("City", back_populates="users")
-
