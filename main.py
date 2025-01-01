@@ -63,4 +63,3 @@ app = get_app()
 celery = app.celery_app
 
 
-
