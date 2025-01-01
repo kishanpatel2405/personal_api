@@ -61,6 +61,7 @@ uvicorn = "0.32.1"
 yarl = "1.18.0"
 celery = "^5.4.0"
 psycopg2 = "^2.9.10"
+alembic = "^1.14.0"
 
 
 [tool.poetry.group.dev.dependencies]
