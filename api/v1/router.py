@@ -1,11 +1,6 @@
 from fastapi import APIRouter
 
-from api.v1.endpoints import (health,
-                              stock,
-                              crypto,
-                              clean_temp,
-                              weather,
-                              )
+from api.v1.endpoints import clean_temp, crypto, health, stock, weather
 
 api_router = APIRouter()
 api_router.include_router(health.router, tags=["Health"])

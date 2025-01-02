@@ -2,6 +2,7 @@ import json
 from calendar import timegm
 from datetime import datetime, timedelta
 from typing import Optional, Type, Union
+
 import tomlkit
 
 try:
