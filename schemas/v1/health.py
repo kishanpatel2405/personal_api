@@ -32,3 +32,8 @@ class UptimeResponse(BaseModel):
 
 class NetworkStatsResponse(BaseModel):
     status: List[dict]
+
+
+class CpuTemperatureResponse(BaseModel):
+    core: int
+    temperature: float
