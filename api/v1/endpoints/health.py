@@ -72,6 +72,8 @@ async def get_network_stats():
             "transmit_errors": io_stats.errout
         })
     return NetworkStatsResponse(status=status)
+
+
 @router.get("/cpu-temperature", response_model=CpuTemperatureResponse, name="cpu-temperature", status_code=200)
 async def get_cpu_temperature():
     try:
