@@ -40,7 +40,6 @@ async def get_system_metrics():
 
 @router.get("/uptime", response_model=UptimeResponse, name="system-uptime", status_code=200)
 async def get_uptime():
-    # Get system uptime in seconds
     uptime_seconds = time.time() - psutil.boot_time()
     uptime = str(time.strftime("%H:%M:%S", time.gmtime(uptime_seconds)))
     return UptimeResponse(uptime=uptime)
