@@ -1,12 +1,12 @@
 import time
 import psutil
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from schemas.v1.health import (DiskUsageResponse, HealthResult,
                                IPAddressResponse, NetworkStatsResponse,
                                SystemMetricsResponse, UptimeResponse)
 from services.health import get_external_ip, get_local_ip
 from utils.enums import Ip_Type
-from utils.errors import ApiException, ErrorMessageCodes  # Assuming ErrorMessageCodes contains relevant codes
+from utils.errors import ApiException, ErrorMessageCodes
 
 router = APIRouter()
 
@@ -37,7 +37,7 @@ async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
             ip_type = "local"
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve IP address: {str(e)}",
-                           error_code=ErrorMessageCodes.IP_RETRIEVAL_FAILED,  # Example error code
+                           error_code=ErrorMessageCodes.IP_RETRIEVAL_FAILED,
                            status_code=500)
 
     return IPAddressResponse(ip_address=ip_address, type=ip_type)
@@ -52,7 +52,7 @@ async def get_system_metrics():
         memory_usage = memory_info.percent
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve system metrics: {str(e)}",
-                           error_code=ErrorMessageCodes.SYSTEM_METRICS_FAILED,  # Example error code
+                           error_code=ErrorMessageCodes.SYSTEM_METRICS_FAILED,
                            status_code=500)
 
     return SystemMetricsResponse(cpu_usage=cpu_usage, memory_usage=memory_usage)
@@ -65,7 +65,7 @@ async def get_uptime():
         uptime = str(time.strftime("%H:%M:%S", time.gmtime(uptime_seconds)))
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve uptime: {str(e)}",
-                           error_code=ErrorMessageCodes.SYSTEM_UPTIME_FAILED,  # Example error code
+                           error_code=ErrorMessageCodes.SYSTEM_UPTIME_FAILED,
                            status_code=500)
 
     return UptimeResponse(uptime=uptime)
@@ -77,7 +77,7 @@ async def get_disk_usage():
         disk_usage = psutil.disk_usage('/')
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve disk usage: {str(e)}",
-                           error_code=ErrorMessageCodes.DISK_USAGE_FAILED,  # Example error code
+                           error_code=ErrorMessageCodes.DISK_USAGE_FAILED,
                            status_code=500)
 
     return DiskUsageResponse(
@@ -106,7 +106,7 @@ async def get_network_stats():
         ]
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve network stats: {str(e)}",
-                           error_code=ErrorMessageCodes.NETWORK_STATS_FAILED,  # Example error code
+                           error_code=ErrorMessageCodes.NETWORK_STATS_FAILED,
                            status_code=500)
 
     return NetworkStatsResponse(status=status)
