@@ -46,20 +46,3 @@ class UptimeResponse(BaseModel):
 
 
 class NetworkStatsResponse(BaseModel):
-    """
-    Response model for returning network statistics.
-    """
-    status: List[Dict[str, str]] = Field(..., description="List of network interface statistics.")
-
-
-class NetworkInterfaceStats(BaseModel):
-    """
-    Model for representing statistics for a single network interface.
-    """
-    interface: str = Field(..., description="The name of the network interface.")
-    bytes_sent_total: int = Field(..., description="Total bytes sent on the interface.")
-    bytes_received_total: int = Field(..., description="Total bytes received on the interface.")
-    packets_sent_total: int = Field(..., description="Total packets sent on the interface.")
-    packets_received_total: int = Field(..., description="Total packets received on the interface.")
-    receive_errors: int = Field(..., description="Number of receive errors on the interface.")
-    transmit_errors: int = Field(..., description="Number of transmit errors on the interface.")

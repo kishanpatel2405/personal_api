@@ -5,7 +5,7 @@ from fastapi import APIRouter
 
 from schemas.v1.health import (DiskUsageResponse, HealthResult,
                                IPAddressResponse, NetworkStatsResponse,
-                               SystemMetricsResponse, UptimeResponse)
+                               SystemMetricsResponse, UptimeResponse, CpuTemperatureResponse)
 from services.health import get_external_ip, get_local_ip
 from utils.enums import Ip_Type
 from utils.errors import ApiException, ErrorMessageCodes
@@ -62,13 +62,6 @@ async def get_system_metrics():
 
 @router.get("/uptime", response_model=UptimeResponse, name="system-uptime", status_code=200)
 async def get_uptime():
-    try:
-        uptime_seconds = time.time() - psutil.boot_time()
-        uptime = str(time.strftime("%H:%M:%S", time.gmtime(uptime_seconds)))
-    except Exception as e:
-        raise ApiException(msg=f"Could not retrieve uptime: {str(e)}",
-                           error_code=ErrorMessageCodes.SYSTEM_UPTIME_FAILED,
-                           status_code=500)
 
     return UptimeResponse(uptime=uptime)
 
@@ -112,3 +105,17 @@ async def get_network_stats():
                            status_code=500)
 
     return NetworkStatsResponse(status=status)
+
+
+@router.get("/cpu-temperature", response_model=CpuTemperatureResponse, name="cpu-temperature", status_code=200)
+async def get_cpu_temperature():
+    try:
+        temperatures = psutil.sensors_temperatures()
+        if "coretemp" in temperatures:
+            core_temperatures = temperatures["coretemp"]
+            if core_temperatures:
+                return CpuTemperatureResponse(core=core_temperatures[0].label, temperature=core_temperatures[0].current)
+        else:
+            return CpuTemperatureResponse(core=-1, temperature=-1)
+    except Exception as e:
+        return CpuTemperatureResponse(core=-1, temperature=-1)
