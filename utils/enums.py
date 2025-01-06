@@ -1,7 +1,6 @@
 from enum import Enum
 
 
-
 class ErrorMessageCodes(Enum):
     SYSTEM_ERROR = "SYSTEM_ERROR"
     IP_RETRIEVAL_FAILED = "IP_RETRIEVAL_FAILED"

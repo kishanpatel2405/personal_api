@@ -10,18 +10,21 @@ from utils.errors import ApiException, ErrorMessageCodes  # Assuming ErrorMessag
 
 router = APIRouter()
 
+
 # Helper function to handle errors with custom ApiException
 def handle_psutil_error(func):
     try:
         return func()
     except Exception as e:
         raise ApiException(msg=f"System error: {str(e)}",
-                            error_code=ErrorMessageCodes.SYSTEM_ERROR,
-                            status_code=500)
+                           error_code=ErrorMessageCodes.SYSTEM_ERROR,
+                           status_code=500)
+
 
 @router.get("/health", response_model=HealthResult, name="health", status_code=200)
 async def health():
     return HealthResult(is_alive=True)
+
 
 @router.get("/ip-address", response_model=IPAddressResponse, status_code=200, name="ip-address")
 async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
@@ -34,10 +37,11 @@ async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
             ip_type = "local"
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve IP address: {str(e)}",
-                            error_code=ErrorMessageCodes.IP_RETRIEVAL_FAILED,  # Example error code
-                            status_code=500)
+                           error_code=ErrorMessageCodes.IP_RETRIEVAL_FAILED,  # Example error code
+                           status_code=500)
 
     return IPAddressResponse(ip_address=ip_address, type=ip_type)
+
 
 @router.get("/metrics", response_model=SystemMetricsResponse, name="health-metrics", status_code=200)
 async def get_system_metrics():
@@ -48,10 +52,11 @@ async def get_system_metrics():
         memory_usage = memory_info.percent
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve system metrics: {str(e)}",
-                            error_code=ErrorMessageCodes.SYSTEM_METRICS_FAILED,  # Example error code
-                            status_code=500)
+                           error_code=ErrorMessageCodes.SYSTEM_METRICS_FAILED,  # Example error code
+                           status_code=500)
 
     return SystemMetricsResponse(cpu_usage=cpu_usage, memory_usage=memory_usage)
+
 
 @router.get("/uptime", response_model=UptimeResponse, name="system-uptime", status_code=200)
 async def get_uptime():
@@ -60,10 +65,11 @@ async def get_uptime():
         uptime = str(time.strftime("%H:%M:%S", time.gmtime(uptime_seconds)))
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve uptime: {str(e)}",
-                            error_code=ErrorMessageCodes.SYSTEM_UPTIME_FAILED,  # Example error code
-                            status_code=500)
+                           error_code=ErrorMessageCodes.SYSTEM_UPTIME_FAILED,  # Example error code
+                           status_code=500)
 
     return UptimeResponse(uptime=uptime)
+
 
 @router.get("/disk-usage", response_model=DiskUsageResponse, name="disk-usage", status_code=200)
 async def get_disk_usage():
@@ -71,8 +77,8 @@ async def get_disk_usage():
         disk_usage = psutil.disk_usage('/')
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve disk usage: {str(e)}",
-                            error_code=ErrorMessageCodes.DISK_USAGE_FAILED,  # Example error code
-                            status_code=500)
+                           error_code=ErrorMessageCodes.DISK_USAGE_FAILED,  # Example error code
+                           status_code=500)
 
     return DiskUsageResponse(
         total=disk_usage.total,
@@ -80,6 +86,7 @@ async def get_disk_usage():
         free=disk_usage.free,
         percent=disk_usage.percent
     )
+
 
 @router.get("/network-status", response_model=NetworkStatsResponse, name="network-status", status_code=200)
 async def get_network_stats():
@@ -99,7 +106,7 @@ async def get_network_stats():
         ]
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve network stats: {str(e)}",
-                            error_code=ErrorMessageCodes.NETWORK_STATS_FAILED,  # Example error code
-                            status_code=500)
+                           error_code=ErrorMessageCodes.NETWORK_STATS_FAILED,  # Example error code
+                           status_code=500)
 
     return NetworkStatsResponse(status=status)
