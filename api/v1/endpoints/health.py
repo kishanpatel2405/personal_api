@@ -16,7 +16,7 @@ def handle_psutil_error(func):
         return func()
     except Exception as e:
         raise ApiException(msg=f"System error: {str(e)}",
-                            error_code=ErrorMessageCodes.SYSTEM_ERROR,  # Customize the error code as per your enum
+                            error_code=ErrorMessageCodes.SYSTEM_ERROR,
                             status_code=500)
 
 @router.get("/health", response_model=HealthResult, name="health", status_code=200)
