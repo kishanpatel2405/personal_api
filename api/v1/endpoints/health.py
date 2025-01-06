@@ -5,7 +5,7 @@ from fastapi import APIRouter
 
 from schemas.v1.health import (DiskUsageResponse, HealthResult,
                                IPAddressResponse, NetworkStatsResponse,
-                               SystemMetricsResponse, UptimeResponse)
+                               SystemMetricsResponse, UptimeResponse, CpuTemperatureResponse)
 from services.health import get_external_ip, get_local_ip
 from utils.enums import Ip_Type
 
@@ -71,3 +71,17 @@ async def get_network_stats():
             "transmit_errors": io_stats.errout
         })
     return NetworkStatsResponse(status=status)
+
+
+@router.get("/cpu-temperature", response_model=CpuTemperatureResponse, name="cpu-temperature", status_code=200)
+async def get_cpu_temperature():
+    try:
+        temperatures = psutil.sensors_temperatures()
+        if "coretemp" in temperatures:
+            core_temperatures = temperatures["coretemp"]
+            if core_temperatures:
+                return CpuTemperatureResponse(core=core_temperatures[0].label, temperature=core_temperatures[0].current)
+        else:
+            return CpuTemperatureResponse(core=-1, temperature=-1)
+    except Exception as e:
+        return CpuTemperatureResponse(core=-1, temperature=-1)
