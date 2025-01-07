@@ -111,15 +111,11 @@ router = APIRouter()
 
 @router.get("/cpu-temperature", response_model=CpuTemperatureResponse, name="cpu-temperature", status_code=200)
 async def get_cpu_temperature():
-    # Always return valid response, even if no data is available
     temperatures = psutil.sensors_temperatures()
 
-    # Check if we have core temperature data
     if "coretemp" in temperatures:
         core_temperatures = temperatures["coretemp"]
         if core_temperatures:
-            # Return the first core's data
             return CpuTemperatureResponse(core=core_temperatures[0].label, temperature=core_temperatures[0].current)
 
-    # Default response if no coretemp is found or no data
     return CpuTemperatureResponse(core="N/A", temperature=-1.0)
