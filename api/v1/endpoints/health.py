@@ -63,7 +63,6 @@ async def get_system_metrics():
 
 @router.get("/uptime", response_model=UptimeResponse, name="system-uptime", status_code=200)
 async def get_uptime():
-
     return UptimeResponse(uptime=uptime)
 
 

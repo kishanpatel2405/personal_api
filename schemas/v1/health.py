@@ -46,3 +46,12 @@ class UptimeResponse(BaseModel):
 
 
 class NetworkStatsResponse(BaseModel):
+    """
+    Response model for returning network statistics.
+    """
+    status: List[Dict[str, str]] = Field(..., description="List of network interfaces with their statistics.")
+
+
+class CpuTemperatureResponse(BaseModel):
+    core: str = Field(..., description="The core temperature label.")
+    temperature: float = Field(..., description="The temperature of the CPU in Celsius.")
