@@ -3,9 +3,10 @@ import time
 import psutil
 from fastapi import APIRouter
 
-from schemas.v1.health import (DiskUsageResponse, HealthResult,
-                               IPAddressResponse, NetworkStatsResponse,
-                               SystemMetricsResponse, UptimeResponse, CpuTemperatureResponse)
+from schemas.v1.health import (CpuTemperatureResponse, DiskUsageResponse,
+                               HealthResult, IPAddressResponse,
+                               NetworkStatsResponse, SystemMetricsResponse,
+                               UptimeResponse)
 from services.health import get_external_ip, get_local_ip
 from utils.enums import Ip_Type
 
