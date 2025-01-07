@@ -1,6 +1,3 @@
-import time
-from datetime import timedelta
-
 import psutil
 from fastapi import APIRouter
 
@@ -14,7 +11,6 @@ from utils.errors import ApiException, ErrorMessageCodes
 router = APIRouter()
 
 
-# Helper function to handle errors with custom ApiException
 def handle_psutil_error(func):
     try:
         return func()
@@ -33,10 +29,10 @@ async def health():
 async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
     try:
         if ip_type == Ip_Type.EXTERNAL:
-            ip_address = get_external_ip()  # Correctly await async function
+            ip_address = get_external_ip()
             ip_type = "external"
         else:
-            ip_address = get_local_ip()  # Correctly await async function
+            ip_address = get_local_ip()
             ip_type = "local"
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve IP address: {str(e)}",
@@ -49,7 +45,6 @@ async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
 @router.get("/metrics", response_model=SystemMetricsResponse, name="health-metrics", status_code=200)
 async def get_system_metrics():
     try:
-        # Using psutil asynchronously where possible (cpu_percent does not need async handling)
         cpu_usage = psutil.cpu_percent(interval=1)
         memory_info = psutil.virtual_memory()
         memory_usage = memory_info.percent
@@ -84,13 +79,13 @@ async def get_network_stats():
         network_stats = psutil.net_io_counters(pernic=True)
         status = [
             {
-                "interface": iface,  # This should be a string
-                "bytes_sent_total": str(io_stats.bytes_sent),  # Convert to string
-                "bytes_received_total": str(io_stats.bytes_recv),  # Convert to string
-                "packets_sent_total": str(io_stats.packets_sent),  # Convert to string
-                "packets_received_total": str(io_stats.packets_recv),  # Convert to string
-                "receive_errors": str(io_stats.errin),  # Convert to string
-                "transmit_errors": str(io_stats.errout)  # Convert to string
+                "interface": iface,
+                "bytes_sent_total": str(io_stats.bytes_sent),
+                "bytes_received_total": str(io_stats.bytes_recv),
+                "packets_sent_total": str(io_stats.packets_sent),
+                "packets_received_total": str(io_stats.packets_recv),
+                "receive_errors": str(io_stats.errin),
+                "transmit_errors": str(io_stats.errout)
             }
             for iface, io_stats in network_stats.items()
         ]
@@ -101,10 +96,6 @@ async def get_network_stats():
 
     return NetworkStatsResponse(status=status)
 
-
-import psutil
-from fastapi import APIRouter
-from pydantic import BaseModel, Field
 
 router = APIRouter()
 
