@@ -7,7 +7,6 @@ from starlette.middleware.cors import CORSMiddleware
 from api.v1.router import api_router as api_v1_router
 from celery_utils import create_celery
 from config import config
-from core.error_handlers import api_exception_handler
 from core.event_handlers import start_app_handler, stop_app_handler
 from utils.enums import Environment
 from utils.errors import ApiException
@@ -45,7 +44,7 @@ def get_app() -> FastAPI:
 
     fast_app.include_router(api_v1_router, prefix="/api/v1")
 
-    fast_app.add_exception_handler(ApiException, api_exception_handler)
+    # fast_app.add_exception_handler(ApiException, api_exception_handler)
 
     fast_app.add_event_handler("startup", start_app_handler(fast_app))
     fast_app.add_event_handler("shutdown", stop_app_handler(fast_app))

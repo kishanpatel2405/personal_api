@@ -77,7 +77,6 @@ class TokenBackend:
             leeway: Union[float, int, timedelta] = None,
             json_encoder: Optional[Type[json.JSONEncoder]] = None,
     ):
-        self._validate_algorithm(algorithm)
 
         self.algorithm = algorithm
         self.signing_key = signing_key

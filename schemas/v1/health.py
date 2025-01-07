@@ -38,13 +38,6 @@ class DiskUsageResponse(BaseModel):
     percent: condecimal(ge=0, le=100) = Field(..., description="Disk usage percentage (0 to 100%).")
 
 
-class UptimeResponse(BaseModel):
-    """
-    Response model for returning the system uptime.
-    """
-    uptime: str = Field(..., description="System uptime in HH:MM:SS format.")
-
-
 class NetworkStatsResponse(BaseModel):
     """
     Response model for returning network statistics.

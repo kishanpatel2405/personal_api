@@ -1,12 +1,12 @@
 import time
+from datetime import timedelta
 
 import psutil
 from fastapi import APIRouter
 
 from schemas.v1.health import (CpuTemperatureResponse, DiskUsageResponse,
                                HealthResult, IPAddressResponse,
-                               NetworkStatsResponse, SystemMetricsResponse,
-                               UptimeResponse)
+                               NetworkStatsResponse, SystemMetricsResponse)
 from services.health import get_external_ip, get_local_ip
 from utils.enums import Ip_Type
 from utils.errors import ApiException, ErrorMessageCodes
@@ -33,10 +33,10 @@ async def health():
 async def get_ip_address(ip_type: Ip_Type = Ip_Type.LOCAL):
     try:
         if ip_type == Ip_Type.EXTERNAL:
-            ip_address = await get_external_ip()
+            ip_address = get_external_ip()  # Correctly await async function
             ip_type = "external"
         else:
-            ip_address = await get_local_ip()
+            ip_address = get_local_ip()  # Correctly await async function
             ip_type = "local"
     except Exception as e:
         raise ApiException(msg=f"Could not retrieve IP address: {str(e)}",
@@ -59,11 +59,6 @@ async def get_system_metrics():
                            status_code=500)
 
     return SystemMetricsResponse(cpu_usage=cpu_usage, memory_usage=memory_usage)
-
-
-@router.get("/uptime", response_model=UptimeResponse, name="system-uptime", status_code=200)
-async def get_uptime():
-    return UptimeResponse(uptime=uptime)
 
 
 @router.get("/disk-usage", response_model=DiskUsageResponse, name="disk-usage", status_code=200)
@@ -89,13 +84,13 @@ async def get_network_stats():
         network_stats = psutil.net_io_counters(pernic=True)
         status = [
             {
-                "interface": iface,
-                "bytes_sent_total": io_stats.bytes_sent,
-                "bytes_received_total": io_stats.bytes_recv,
-                "packets_sent_total": io_stats.packets_sent,
-                "packets_received_total": io_stats.packets_recv,
-                "receive_errors": io_stats.errin,
-                "transmit_errors": io_stats.errout
+                "interface": iface,  # This should be a string
+                "bytes_sent_total": str(io_stats.bytes_sent),  # Convert to string
+                "bytes_received_total": str(io_stats.bytes_recv),  # Convert to string
+                "packets_sent_total": str(io_stats.packets_sent),  # Convert to string
+                "packets_received_total": str(io_stats.packets_recv),  # Convert to string
+                "receive_errors": str(io_stats.errin),  # Convert to string
+                "transmit_errors": str(io_stats.errout)  # Convert to string
             }
             for iface, io_stats in network_stats.items()
         ]
@@ -107,15 +102,24 @@ async def get_network_stats():
     return NetworkStatsResponse(status=status)
 
 
+import psutil
+from fastapi import APIRouter
+from pydantic import BaseModel, Field
+
+router = APIRouter()
+
+
 @router.get("/cpu-temperature", response_model=CpuTemperatureResponse, name="cpu-temperature", status_code=200)
 async def get_cpu_temperature():
-    try:
-        temperatures = psutil.sensors_temperatures()
-        if "coretemp" in temperatures:
-            core_temperatures = temperatures["coretemp"]
-            if core_temperatures:
-                return CpuTemperatureResponse(core=core_temperatures[0].label, temperature=core_temperatures[0].current)
-        else:
-            return CpuTemperatureResponse(core=-1, temperature=-1)
-    except Exception as e:
-        return CpuTemperatureResponse(core=-1, temperature=-1)
+    # Always return valid response, even if no data is available
+    temperatures = psutil.sensors_temperatures()
+
+    # Check if we have core temperature data
+    if "coretemp" in temperatures:
+        core_temperatures = temperatures["coretemp"]
+        if core_temperatures:
+            # Return the first core's data
+            return CpuTemperatureResponse(core=core_temperatures[0].label, temperature=core_temperatures[0].current)
+
+    # Default response if no coretemp is found or no data
+    return CpuTemperatureResponse(core="N/A", temperature=-1.0)

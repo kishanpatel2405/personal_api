@@ -3,7 +3,7 @@ from typing import Callable
 
 import sib_api_v3_sdk
 from fastapi import FastAPI
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 from sqlalchemy import URL, create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -19,10 +19,11 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
     DB_POOL_SIZE: int
     DB_MAX_OVERFLOW: int
-    SECRET_KEY: str
+    # SECRET_KEY: str
 
     class Config:
         env_file = ".env"
+        extra = "allow"
 
 
 settings = Settings()
@@ -34,17 +35,19 @@ async def _startup(app: FastAPI) -> None:
     engine = create_engine(
         URL.create(
             drivername="postgresql+psycopg2",
-            username="root",
-            password="your_password",
-            host="localhost",
+            username=settings.POSTGRES_USER,
+            password=settings.POSTGRES_PASSWORD,
+            host=settings.POSTGRES_HOST,
             port=5432,
-            database="my_api",
+            database=settings.POSTGRES_DB,
         ).render_as_string(hide_password=False),
         pool_size=settings.DB_POOL_SIZE,
         max_overflow=settings.DB_MAX_OVERFLOW,
     )
     app.db_session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    app.token_backend = TokenBackend("HS256", settings.SECRET_KEY, "", None, None, None, 0, None)
+    app.token_backend = TokenBackend(
+        "HS256", "", None, None, None, 0, None
+    )
     app.sendinblue_api_client = sib_api_v3_sdk.ApiClient(configuration)
 
 
