@@ -7,8 +7,6 @@ from pydantic_settings import BaseSettings
 from sqlalchemy import URL, create_engine
 from sqlalchemy.orm import sessionmaker
 
-from utils.misc import TokenBackend
-
 logger = logging.getLogger(__name__)
 
 
@@ -19,6 +17,7 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
     DB_POOL_SIZE: int
     DB_MAX_OVERFLOW: int
+
     # SECRET_KEY: str
 
     class Config:
@@ -45,9 +44,6 @@ async def _startup(app: FastAPI) -> None:
         max_overflow=settings.DB_MAX_OVERFLOW,
     )
     app.db_session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    app.token_backend = TokenBackend(
-        "HS256", "", None, None, None, 0, None
-    )
     app.sendinblue_api_client = sib_api_v3_sdk.ApiClient(configuration)
 
 
