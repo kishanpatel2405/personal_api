@@ -63,28 +63,6 @@ def fetch_weather_data(city: str):
         )
 
 
-def fetch_historical_weather_data(city: str, start_date: str, end_date: str):
-    try:
-        start_timestamp = int(datetime.strptime(start_date, "%Y-%m-%d").timestamp())
-        end_timestamp = int(datetime.strptime(end_date, "%Y-%m-%d").timestamp())
-    except ValueError as e:
-        raise ApiException(
-            msg="Invalid date format. Use YYYY-MM-DD.",
-            error_code=ErrorMessageCodes.BAD_REQUEST,
-            status_code=400
-        )
-
-    city_coords = fetch_city_coordinates(city)
-
-    historical_weather_data = []
-
-    for timestamp in range(start_timestamp, end_timestamp, 86400):
-        weather_data = get_weather_for_date(city_coords, timestamp)
-        historical_weather_data.append(weather_data)
-
-    return historical_weather_data
-
-
 def fetch_city_coordinates(city: str):
     geocode_url = "http://api.openweathermap.org/data/2.5/weather"
     params = {
