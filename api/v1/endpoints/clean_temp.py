@@ -4,6 +4,7 @@ import shutil
 from fastapi import APIRouter, HTTPException
 
 from schemas.v1.clean_temp import CleanTempResponse
+from services.clean_temp import attempt_delete
 
 router = APIRouter()
 
@@ -11,7 +12,7 @@ router = APIRouter()
 @router.post("", response_model=CleanTempResponse, name="clean_temp", status_code=200)
 async def clean_temp_files():
     temp_directories = [
-        "C:/Windows/Temp",
+        r"C:\Users\kisha\AppData\Local\Temp",
         "/tmp",
     ]
 
@@ -25,8 +26,10 @@ async def clean_temp_files():
                     for file in files:
                         try:
                             file_path = os.path.join(root, file)
-                            os.remove(file_path)
-                            cleaned_files_count += 1
+                            if attempt_delete(file_path):
+                                cleaned_files_count += 1
+                            else:
+                                errors.append(f"Error deleting {file_path}: File is in use or permission denied.")
                         except Exception as e:
                             errors.append(f"Error deleting {file_path}: {str(e)}")
 
@@ -41,8 +44,17 @@ async def clean_temp_files():
         else:
             errors.append(f"Temp directory {temp_dir} not found or inaccessible.")
 
-    if cleaned_files_count == 0 and errors:
-        raise HTTPException(status_code=500, detail="Failed to clean temporary files.")
+    if errors:
+        return CleanTempResponse(
+            cleaned_files=cleaned_files_count,
+            errors=errors,
+        )
+
+    if cleaned_files_count == 0:
+        return CleanTempResponse(
+            cleaned_files=cleaned_files_count,
+            errors=errors,
+        )
 
     return CleanTempResponse(
         cleaned_files=cleaned_files_count,
