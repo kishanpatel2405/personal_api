@@ -97,9 +97,6 @@ async def get_network_stats():
     return NetworkStatsResponse(status=status)
 
 
-router = APIRouter()
-
-
 @router.get("/cpu-temperature", response_model=CpuTemperatureResponse, name="cpu-temperature", status_code=200)
 async def get_cpu_temperature():
     temperatures = psutil.sensors_temperatures()
