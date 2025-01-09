@@ -12,8 +12,7 @@ router = APIRouter()
 @router.post("", response_model=CleanTempResponse, name="clean_temp", status_code=200)
 async def clean_temp_files():
     temp_directories = [
-        r"C:\Users\kisha\AppData\Local\Temp",
-        "/tmp",
+        r"C:\Users\kisha\AppData\Local\Temp"
     ]
 
     cleaned_files_count = 0
