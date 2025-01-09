@@ -17,9 +17,12 @@ sendinblue_api_client = sib_api_v3_sdk.ApiClient(configuration)
     retry_kwargs={"max_retries": 5},
 )
 def task_send_welcome_mail(self, name: str, email: str):
-    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=[{"name": name, "email": email}], template_id=5,
-                                                   params={"name": name})
-    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)
+    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+        to=[{"name": name, "email": email}], template_id=5, params={"name": name}
+    )
+    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(
+        send_smtp_email
+    )
 
 
 @shared_task(
@@ -35,7 +38,9 @@ def verification_mail(self, email: str, token: str):
         template_id=config.TEMPLATE_ID_OF_EMAIL_STRUCTURE_FOR_USER_EMAIL_VERIFICATION,
         params={"name": name, "verification_link": token},
     )
-    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)
+    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(
+        send_smtp_email
+    )
 
 
 @shared_task(
@@ -62,7 +67,9 @@ def forgot_password_mail(self, email: str, token: str):
         template_id=config.TEMPLATE_ID_OF_EMAIL_STRUCTURE_FOR_FORGOT_PASSWORD_EMAIL_VERIFICATION,
         params={"name": name, "reset_password_link": token},
     )
-    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)
+    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(
+        send_smtp_email
+    )
 
 
 @shared_task(
@@ -72,16 +79,16 @@ def forgot_password_mail(self, email: str, token: str):
     retry_kwargs={"max_retries": 5},
 )
 def send_credit_notification(
-        self,
-        first_name: str,
-        last_name: str,
-        company_name: str,
-        company_email: str,
-        subject: str,
-        previous_credit: str,
-        credit_change: str,
-        new_credit: str,
-        credit_type: str,
+    self,
+    first_name: str,
+    last_name: str,
+    company_name: str,
+    company_email: str,
+    subject: str,
+    previous_credit: str,
+    credit_change: str,
+    new_credit: str,
+    credit_type: str,
 ):
     send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
         to=[{"name": f"{first_name} {last_name}", "email": company_email}],
@@ -99,4 +106,6 @@ def send_credit_notification(
         },
     )
 
-    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(send_smtp_email)
+    sib_api_v3_sdk.TransactionalEmailsApi(sendinblue_api_client).send_transac_email(
+        send_smtp_email
+    )

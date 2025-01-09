@@ -20,7 +20,6 @@ class Ip_Type(Enum):
 class RoleEnum(str, Enum):
     User = 1
     Admin = 2
-    SuperAdmin = 3
 
 
 class TokenType(int, Enum):

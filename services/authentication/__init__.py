@@ -27,7 +27,9 @@ def get_role(db: Session, role: RoleEnum):
 
 def verify_email_token(db: Session, token: str):
     # Retrieve the token from the database.
-    db_token = db.query(UserEmailToken).filter(UserEmailToken.user_token == token).first()
+    db_token = (
+        db.query(UserEmailToken).filter(UserEmailToken.user_token == token).first()
+    )
 
     # Ensure token exists in the database.
     if not db_token:
@@ -92,7 +94,9 @@ def get_user_by_id(db: Session, user_id: int):
 def get_user_profile_details(db: Session, user_id: int):
     return (
         db.query(User)
-        .options(joinedload(User.country), joinedload(User.state), joinedload(User.city))
+        .options(
+            joinedload(User.country), joinedload(User.state), joinedload(User.city)
+        )
         .filter(User.id == user_id)
         .first()
     )
@@ -114,7 +118,9 @@ def generate_encoded_password(password: str):
 
 
 def reset_user_password(db: Session, token: str, user_id: int, password: str):
-    db_token = db.query(UserEmailToken).filter(UserEmailToken.user_token == token).first()
+    db_token = (
+        db.query(UserEmailToken).filter(UserEmailToken.user_token == token).first()
+    )
     user = get_user_by_id(db, user_id)
     set_password(db, password, user.id)
     db_token.is_used = True
@@ -130,7 +136,9 @@ def create_link_for_forgot_password_email_verification(token: str):
 
 
 def verify_forgot_password_token(db: Session, token: str):
-    db_token = db.query(UserEmailToken).filter(UserEmailToken.user_token == token).first()
+    db_token = (
+        db.query(UserEmailToken).filter(UserEmailToken.user_token == token).first()
+    )
 
     if not db_token:
         return "invalid token"
@@ -151,7 +159,9 @@ def verify_forgot_password_token(db: Session, token: str):
 
 
 def get_user_by_verification_token(db: Session, token: str):
-    db_token = db.query(UserEmailToken).filter(UserEmailToken.user_token == token).first()
+    db_token = (
+        db.query(UserEmailToken).filter(UserEmailToken.user_token == token).first()
+    )
     if db_token:
         return db_token
     return False
@@ -160,9 +170,3 @@ def get_user_by_verification_token(db: Session, token: str):
 async def get_maintenance_status(db: Session):
     maintenance_status = db.query(UnderMaintenance).first()
     return maintenance_status
-
-
-
-
-
-

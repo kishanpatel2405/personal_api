@@ -15,13 +15,11 @@ logger.setLevel(logging.INFO)
 
 
 def get_app() -> FastAPI:
-    """Creates and configures the FastAPI application."""
-
-    docs_url = None if config.ENVIRONMENT == Environment.PRODUCTION else "/docs"
+    docs_url = None if config.ENVIRONMENT == Environment.DEVELOPMENT else "/docs"
 
     fast_app = FastAPI(
         title=config.PROJECT_NAME,
-        debug=config.ENVIRONMENT != Environment.PRODUCTION,
+        debug=config.ENVIRONMENT != Environment.DEVELOPMENT,
         swagger_ui_parameters={"defaultModelsExpandDepth": -1},
         docs_url=docs_url,
     )

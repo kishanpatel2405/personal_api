@@ -25,10 +25,10 @@ class Config(BaseSettings):
     APP_HOST: str
     APP_PORT: int
 
-
     class Config:
         env_file = ".env"
         extra = "allow"
         case_sensitive = True
+
 
 config = Config()

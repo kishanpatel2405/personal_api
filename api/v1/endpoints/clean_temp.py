@@ -11,9 +11,7 @@ router = APIRouter()
 
 @router.post("", response_model=CleanTempResponse, name="clean_temp", status_code=200)
 async def clean_temp_files():
-    temp_directories = [
-        r"C:\Users\kisha\AppData\Local\Temp"
-    ]
+    temp_directories = [r"C:\Users\kisha\AppData\Local\Temp"]
 
     cleaned_files_count = 0
     errors = []
@@ -28,7 +26,9 @@ async def clean_temp_files():
                             if attempt_delete(file_path):
                                 cleaned_files_count += 1
                             else:
-                                errors.append(f"Error deleting {file_path}: File is in use or permission denied.")
+                                errors.append(
+                                    f"Error deleting {file_path}: File is in use or permission denied."
+                                )
                         except Exception as e:
                             errors.append(f"Error deleting {file_path}: {str(e)}")
 
