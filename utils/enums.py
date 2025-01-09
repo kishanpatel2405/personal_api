@@ -80,4 +80,17 @@ class TimeLimit(int, Enum):
 
 
 class Currency(str, Enum):
-    INR = "₹"
+    INR = "₹"  # Indian Rupee
+    USD = "$"  # US Dollar
+    EUR = "€"  # Euro
+    GBP = "£"  # British Pound
+    JPY = "¥"  # Japanese Yen
+    CNY = "¥"  # Chinese Yuan
+    KRW = "₩"  # Korean Won
+    BTC = "₿"  # Bitcoin
+    PHP = "₱"  # Philippine Peso
+    THB = "฿"  # Thai Baht
+    VND = "₫"  # Vietnamese Dong
+    NGN = "₦"  # Nigerian Naira
+    RUB = "₽"  # Russian Ruble
+    TRY = "₺"  # Turkish Lira
