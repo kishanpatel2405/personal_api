@@ -1,8 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
-from sqlalchemy.orm import (Mapped, declarative_base, mapped_column,
-                            relationship)
+from sqlalchemy.orm import Mapped, declarative_base, mapped_column
 
 Base = declarative_base()
 
@@ -30,10 +29,3 @@ class User(Base):
         Integer, ForeignKey("city_data.id"), nullable=True
     )
     date_of_birth: Mapped[datetime] = mapped_column(DateTime, nullable=True)
-\
-
-
-
-
-
-
