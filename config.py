@@ -2,11 +2,8 @@ import secrets
 
 from pydantic_settings import BaseSettings
 
-from utils.enums import Environment
-
 
 class Config(BaseSettings):
-    ENVIRONMENT: Environment
     API_PREFIX: str = "/api/"
     SECRET_KEY: str = secrets.token_urlsafe(32)
 

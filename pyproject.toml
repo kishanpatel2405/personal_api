@@ -65,6 +65,7 @@ alembic = "^1.14.0"
 isort = "^5.13.2"
 black = "^24.10.0"
 flake8 = "^7.1.1"
+quote = "^3.0"
 
 
 [tool.poetry.group.dev.dependencies]

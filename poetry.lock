@@ -910,6 +910,19 @@ files = [
 ]
 
 [[package]]
+name = "gazpacho"
+version = "1.1"
+description = "The simple, fast, and modern web scraping library"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "gazpacho-1.1.tar.gz", hash = "sha256:1579c1be2de05b5ded0a97107b179d12491392fb095aeab185b283ea48cd7010"},
+]
+
+[package.extras]
+dev = ["black (>=20.8b1)", "mypy (>=0.782)", "portray (>=1.4.0)", "pytest (>=6.0.2)"]
+
+[[package]]
 name = "git-filter-repo"
 version = "2.45.0"
 description = "Quickly rewrite git repository history"
@@ -2123,6 +2136,20 @@ files = [
 ]
 
 [[package]]
+name = "quote"
+version = "3.0"
+description = "A wrapper for the Goodreads Quote API"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "quote-3.0-py3-none-any.whl", hash = "sha256:b7a90c2dc1404d13cad341dfdca315d87549a298d39f11b8fb0c7e7ed02f7de9"},
+    {file = "quote-3.0.tar.gz", hash = "sha256:06873dfed9200cb2e88f98c562080938b42c88d4a37dcf89542cff3a210b6287"},
+]
+
+[package.dependencies]
+gazpacho = ">=1.0"
+
+[[package]]
 name = "requests"
 version = "2.32.3"
 description = "Python HTTP for Humans."
@@ -2507,4 +2534,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "f4cadb7445b31b956068d9c702dc0ed05f6f7963344cfc83e0134363b221df06"
+content-hash = "22da517d3e486f5447cce0fa55bf7dae46a5860be7a0ad41568275208972e970"

@@ -57,3 +57,4 @@ pydantic-settings~=2.6.1
 alembic~=1.14.0
 fastapi-pagination~=0.12.34
 celery~=5.4.0
+quote~=3.0
