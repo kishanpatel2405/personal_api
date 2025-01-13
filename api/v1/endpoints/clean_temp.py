@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
 from schemas.v1.clean_temp import CleanTempResponse
 from services.clean_temp import attempt_delete
