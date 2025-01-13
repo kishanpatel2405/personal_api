@@ -1,4 +1,5 @@
 import secrets
+
 from pydantic_settings import BaseSettings
 
 from utils.enums import Environment
