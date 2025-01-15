@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from api.v1.router import api_router
 
 app = FastAPI(
-    title="My API",
+    title="Personal API",
     description="A FastAPI project for daily tools and services.",
     version="1.0.0",
 )
