@@ -66,6 +66,10 @@ isort = "^5.13.2"
 black = "^24.10.0"
 flake8 = "^7.1.1"
 quote = "^3.0"
+spotipy = "^2.25.0"
+google-auth-oauthlib = "^1.2.1"
+google-api-python-client = "^2.158.0"
+google-auth = "^2.37.0"
 
 
 [tool.poetry.group.dev.dependencies]

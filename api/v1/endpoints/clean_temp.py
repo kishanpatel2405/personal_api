@@ -9,7 +9,9 @@ from services.clean_temp import attempt_delete
 router = APIRouter()
 
 
-@router.post("", response_model=CleanTempResponse, name="clean_temp", status_code=200)
+@router.post(
+    "/clean_temp", response_model=CleanTempResponse, name="clean_temp", status_code=200
+)
 async def clean_temp_files():
     temp_directories = [r"C:\Users\kisha\AppData\Local\Temp"]
 
