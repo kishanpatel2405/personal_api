@@ -1,25 +1,29 @@
 import requests
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from schemas.v1.DailyEnglish import EnglishLesson
 
 router = APIRouter()
 
-WORDNIK_API_KEY = "YOUR_WORDNIK_API_KEY"
-WORDNIK_API_URL = "https://api.wordnik.com/v4/words.json/wordOfTheDay"
+URL = "https://api.datamuse.com/words"
 
 
 @router.get("/english/lesson/daily", response_model=EnglishLesson, status_code=200)
 def get_daily_english_lesson():
-    response = requests.get(WORDNIK_API_URL, params={"apiKey": WORDNIK_API_KEY})
+    response = requests.get(URL, params={"ml": "random", "max": 3})
     if response.status_code != 200:
-        return {"error": "Could not fetch word of the day"}
+        raise HTTPException(status_code=500, detail="Could not fetch word of the day")
 
-    word_data = response.json()
+    words = response.json()
+    if not words:
+        raise HTTPException(status_code=500, detail="No words found")
+
+    word_of_the_day = words[0]["word"]
+
     lesson = EnglishLesson(
-        word=word_data["word"],
-        definition=word_data["definitions"][0]["text"],
-        example_sentence=word_data["examples"][0]["text"],
-        part_of_speech=word_data["partOfSpeech"],
+        word=word_of_the_day,
+        definition="This is a placeholder definition.",
+        example_sentence=f"The word '{word_of_the_day}' is fascinating!",
+        part_of_speech="noun",
     )
     return lesson
