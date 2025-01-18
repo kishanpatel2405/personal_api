@@ -19,7 +19,6 @@ async def get_weather(
     if not city and not custom_city:
         return {
             "error": "No city parameter provided. Please select a city from the dropdown or enter a custom city.",
-            "status_code": 400,
         }
 
     city_name = custom_city if city == "Other" else city.value if city else custom_city
