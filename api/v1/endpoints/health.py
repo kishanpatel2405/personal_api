@@ -11,17 +11,6 @@ from utils.errors import ApiException, ErrorMessageCodes
 router = APIRouter()
 
 
-def handle_psutil_error(func):
-    try:
-        return func()
-    except Exception as e:
-        raise ApiException(
-            msg=f"System error: {str(e)}",
-            error_code=ErrorMessageCodes.SYSTEM_ERROR,
-            status_code=500,
-        )
-
-
 @router.get("/health", response_model=HealthResult, name="health", status_code=200)
 async def health():
     return HealthResult(is_alive=True)
