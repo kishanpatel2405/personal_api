@@ -9,3 +9,5 @@ class ApiException(HTTPException):
         self.msg = msg
         self.error_code = error_code
         self.status_code = status_code
+
+
