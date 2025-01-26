@@ -31,7 +31,9 @@ async def _startup(app: FastAPI) -> None:
         # echo=False,
     )
     app.db_session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    app.token_backend = TokenBackend("HS256", app.config.SECRET_KEY, "", None, None, None, 0, None)
+    app.token_backend = TokenBackend(
+        "HS256", app.config.SECRET_KEY, "", None, None, None, 0, None
+    )
     app.sendinblue_api_client = sib_api_v3_sdk.ApiClient(configuration)
 
 

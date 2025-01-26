@@ -33,7 +33,9 @@ def customize_json_serializer(value):
 
 
 def to_json(obj):
-    return json.dumps(obj, separators=(",", ":"), ensure_ascii=True, default=customize_json_serializer)
+    return json.dumps(
+        obj, separators=(",", ":"), ensure_ascii=True, default=customize_json_serializer
+    )
 
 
 async def json_or_text(response):
@@ -67,15 +69,15 @@ def datetime_from_epoch(ts):
 
 class TokenBackend:
     def __init__(
-            self,
-            algorithm,
-            signing_key=None,
-            verifying_key="",
-            audience=None,
-            issuer=None,
-            jwk_url: str = None,
-            leeway: Union[float, int, timedelta] = None,
-            json_encoder: Optional[Type[json.JSONEncoder]] = None,
+        self,
+        algorithm,
+        signing_key=None,
+        verifying_key="",
+        audience=None,
+        issuer=None,
+        jwk_url: str = None,
+        leeway: Union[float, int, timedelta] = None,
+        json_encoder: Optional[Type[json.JSONEncoder]] = None,
     ):
         self._validate_algorithm(algorithm)
 

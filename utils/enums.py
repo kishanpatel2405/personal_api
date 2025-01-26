@@ -3,6 +3,8 @@ from enum import Enum
 
 class ErrorMessageCodes(str, Enum):
     NOT_FOUND = "NOT_FOUND"
+
+
 class ErrorMessageCodes(Enum):
     SYSTEM_ERROR = "SYSTEM_ERROR"
     IP_RETRIEVAL_FAILED = "IP_RETRIEVAL_FAILED"
@@ -77,6 +79,8 @@ class TimeLimit(int, Enum):
     one_minute = 60  # 1 minute
     two_minutes = 120  # 2 minutes
     five_minutes = 300  # 5 minutes
+
+
 class Currency(str, Enum):
     INR = "₹"  # Indian Rupee
     USD = "$"  # US Dollar

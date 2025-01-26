@@ -24,6 +24,6 @@ for i in range(num):
 print(fibonacci_series)
 
 # find ascii value
-a = 'g'
+a = "g"
 
 print(ord(a))

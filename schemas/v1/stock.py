@@ -7,7 +7,9 @@ from utils.enums import StockSymbol
 
 class StockInsightRequest(BaseModel):
     stock_symbol: StockSymbol = Field(..., description="Stock symbol", example="AAPL")
-    days: int = Field(..., ge=1, le=30, description="Number of days for prediction", example=5)
+    days: int = Field(
+        ..., ge=1, le=30, description="Number of days for prediction", example=5
+    )
 
 
 class StockInsightResponse(BaseModel):

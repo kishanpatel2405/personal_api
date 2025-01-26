@@ -25,8 +25,8 @@ def fetch_real_time_stock_data(stock_symbol: str) -> float:
                 "function": function,
                 "from_currency": from_currency,
                 "to_currency": to_currency,
-                "apikey": ALPHA_VANTAGE_API_KEY
-            }
+                "apikey": ALPHA_VANTAGE_API_KEY,
+            },
         )
         key = "Realtime Currency Exchange Rate"
         price_key = "5. Exchange Rate"
@@ -37,18 +37,22 @@ def fetch_real_time_stock_data(stock_symbol: str) -> float:
             params={
                 "function": function,
                 "symbol": stock_symbol,
-                "apikey": ALPHA_VANTAGE_API_KEY
-            }
+                "apikey": ALPHA_VANTAGE_API_KEY,
+            },
         )
         key = "Global Quote"
         price_key = "05. price"
 
     if response.status_code != 200:
-        raise HTTPException(status_code=500, detail="Failed to fetch data from Alpha Vantage.")
+        raise HTTPException(
+            status_code=500, detail="Failed to fetch data from Alpha Vantage."
+        )
 
     data = response.json()
     if key not in data or price_key not in data[key]:
-        raise HTTPException(status_code=404, detail=f"Symbol '{stock_symbol}' not found or invalid.")
+        raise HTTPException(
+            status_code=404, detail=f"Symbol '{stock_symbol}' not found or invalid."
+        )
 
     return float(data[key][price_key])
 
@@ -63,8 +67,8 @@ def fetch_historical_stock_data(stock_symbol: str, days: int):
             "function": "TIME_SERIES_DAILY",
             "symbol": stock_symbol,
             "apikey": ALPHA_VANTAGE_API_KEY,
-            "outputsize": "compact"
-        }
+            "outputsize": "compact",
+        },
     )
 
     if response.status_code != 200:
@@ -72,7 +76,9 @@ def fetch_historical_stock_data(stock_symbol: str, days: int):
 
     data = response.json()
     if "Time Series (Daily)" not in data:
-        raise HTTPException(status_code=404, detail=f"Stock symbol '{stock_symbol}' not found.")
+        raise HTTPException(
+            status_code=404, detail=f"Stock symbol '{stock_symbol}' not found."
+        )
 
     time_series = data["Time Series (Daily)"]
     historical_prices = []
@@ -83,13 +89,18 @@ def fetch_historical_stock_data(stock_symbol: str, days: int):
     return historical_prices
 
 
-def generate_stock_predictions(stock_symbol: str, current_price: float, days: int) -> list:
+def generate_stock_predictions(
+    stock_symbol: str, current_price: float, days: int
+) -> list:
     """
     Generate stock predictions based on historical data and trend analysis.
     """
     historical_prices = fetch_historical_stock_data(stock_symbol, days)
 
-    price_changes = [historical_prices[i] - historical_prices[i - 1] for i in range(1, len(historical_prices))]
+    price_changes = [
+        historical_prices[i] - historical_prices[i - 1]
+        for i in range(1, len(historical_prices))
+    ]
     avg_change = sum(price_changes) / len(price_changes) if price_changes else 0
 
     predictions = []
@@ -103,10 +114,12 @@ def generate_stock_predictions(stock_symbol: str, current_price: float, days: in
             signal = "Sell"
 
         predicted_date = (datetime.now() + timedelta(days=i)).strftime("%Y-%m-%d")
-        predictions.append({
-            "date": predicted_date,
-            "predicted_price": round(predicted_price, 2),
-            "signal": signal
-        })
+        predictions.append(
+            {
+                "date": predicted_date,
+                "predicted_price": round(predicted_price, 2),
+                "signal": signal,
+            }
+        )
 
     return predictions
