@@ -1,0 +1,18 @@
+GET http://127.0.0.1:8000/hello/User
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+<> 2024-12-24T153851.404.json
+
+###
+
+GET http://127.0.0.1:8000
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+<> 2024-12-24T153843.404.json
+
+###
+
