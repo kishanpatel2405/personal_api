@@ -2,6 +2,7 @@ from typing import Any, Dict, Optional
 
 from fastapi import APIRouter, Query
 
+from services.weather import fetch_weather_data
 from services.weather import fetch_historical_weather_data, fetch_weather_data
 from utils.enums import GujaratCities
 from utils.errors import ApiException
@@ -9,10 +10,13 @@ from utils.errors import ApiException
 router = APIRouter()
 
 
-@router.get("", name="get live weather", response_model=Dict[str, Any], status_code=200)
-async def get_weather(city: Optional[GujaratCities] = Query(None),
-                      custom_city: Optional[str] = Query(None),
-                      ):
+@router.get(
+    "/weather", name="get live weather", response_model=Dict[str, Any], status_code=200
+)
+async def get_weather(
+    city: Optional[GujaratCities] = Query(None),
+    custom_city: Optional[str] = Query(None),
+):
     if not city and not custom_city:
         return {
             "error": "No city parameter provided. Please select a city from the dropdown or enter a custom city.",
@@ -24,7 +28,9 @@ async def get_weather(city: Optional[GujaratCities] = Query(None),
     try:
         weather_data = fetch_weather_data(city_name)
     except ApiException as e:
-        raise ApiException(msg=e.msg, error_code=e.error_code, status_code=e.status_code)
+        raise ApiException(
+            msg=e.msg, error_code=e.error_code, status_code=e.status_code
+        )
 
     return {
         "city": weather_data["city"],

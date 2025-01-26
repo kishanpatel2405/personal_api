@@ -23,4 +23,6 @@ def get_external_ip() -> str:
         response.raise_for_status()
         return response.json().get("ip")
     except requests.RequestException:
-        raise HTTPException(status_code=500, detail="Unable to fetch external IP address.")
+        raise HTTPException(
+            status_code=500, detail="Unable to fetch external IP address."
+        )

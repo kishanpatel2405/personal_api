@@ -97,7 +97,7 @@ def fetch_city_coordinates(city: str):
         raise ApiException(
             msg="City not found or API error.",
             error_code=ErrorMessageCodes.NOT_FOUND,
-            status_code=response.status_code
+            status_code=response.status_code,
         )
 
     data = response.json()

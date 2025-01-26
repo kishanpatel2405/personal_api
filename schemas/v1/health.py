@@ -1,6 +1,6 @@
-from typing import List
+from typing import Dict, List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, condecimal
 
 from utils.enums import Ip_Type
 
@@ -23,12 +23,13 @@ class DiskUsageResponse(BaseModel):
     total: int
     used: int
     free: int
-    percent: float
-
-
-class UptimeResponse(BaseModel):
-    uptime: str
+    percent: condecimal(ge=0, le=100)
 
 
 class NetworkStatsResponse(BaseModel):
-    status: List[dict]
+    status: List[Dict[str, str]]
+
+
+class CpuTemperatureResponse(BaseModel):
+    core: str
+    temperature: float
