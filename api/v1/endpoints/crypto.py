@@ -6,9 +6,9 @@ import pandas as pd
 import plotly.graph_objects as go
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
-from services.crypto import calculate_stop_loss_and_target
 
 from schemas.v1.crypto import TradeSignalResponse
+from services.crypto import calculate_stop_loss_and_target
 
 router = APIRouter()
 

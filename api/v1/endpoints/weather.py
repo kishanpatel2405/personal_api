@@ -2,7 +2,6 @@ from typing import Any, Dict, Optional
 
 from fastapi import APIRouter, Query
 
-from services.weather import fetch_weather_data
 from services.weather import fetch_historical_weather_data, fetch_weather_data
 from utils.enums import GujaratCities
 from utils.errors import ApiException
