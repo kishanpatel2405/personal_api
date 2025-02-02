@@ -27,3 +27,4 @@ api_router.include_router(weather.router, prefix="/weather", tags=["Weather"])
 api_router.include_router(MotivatorPlay.router, tags=["Motivator Play"])
 
 api_router.include_router(DailyEnglish.router, tags=["Daily English"])
+
