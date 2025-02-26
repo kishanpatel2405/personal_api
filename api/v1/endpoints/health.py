@@ -73,7 +73,7 @@ async def get_disk_usage():
         raise ApiException(
             msg=f"Could not retrieve disk usage: {str(e)}",
             error_code=ErrorMessageCodes.DISK_USAGE_FAILED,
-            status_code=500,
+            status_code=404,
         )
 
     return DiskUsageResponse(
