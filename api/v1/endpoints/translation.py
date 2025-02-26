@@ -10,8 +10,8 @@ translator = Translator()
 
 @router.get("/translate", response_model=TranslationResponse, status_code=200)
 async def translate(
-        text: str = Query(..., description="Text to be translated"),
-        target_language: SupportedLanguages = Query(..., description="Target language")
+    text: str = Query(..., description="Text to be translated"),
+    target_language: SupportedLanguages = Query(..., description="Target language"),
 ):
     try:
         translated = translator.translate(text, dest=target_language.value)

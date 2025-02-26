@@ -10,7 +10,7 @@ from api.v1.endpoints import (
     stock,
     timezone,
     weather,
-    translation
+    translation,
 )
 
 api_router = APIRouter()
