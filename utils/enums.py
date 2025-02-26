@@ -119,3 +119,14 @@ class Timezone(str, Enum):
     singapore_time = "Asia/Singapore"
     indonesia_time = "Asia/Jakarta"
     nigeria_time = "Africa/Lagos"
+
+
+class SupportedLanguages(str, Enum):
+    en = "en"  # English
+    es = "es"  # Spanish
+    fr = "fr"  # French
+    de = "de"  # German
+    it = "it"  # Italian
+    zh = "zh"  # Chinese
+    hi = "hi"  # Hindi
+    ar = "ar"  # Arabic

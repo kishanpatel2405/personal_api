@@ -5,12 +5,12 @@ from api.v1.endpoints import (
     DailyEnglish,
     MotivatorPlay,
     affirmations,
-    clean_temp,
     crypto,
     health,
     stock,
     timezone,
     weather,
+    translation
 )
 
 api_router = APIRouter()
@@ -32,3 +32,5 @@ api_router.include_router(CalendarHub.router, tags=["Calendar Hub"])
 api_router.include_router(MotivatorPlay.router, tags=["Motivator Play"])
 
 api_router.include_router(DailyEnglish.router, tags=["Daily English"])
+
+api_router.include_router(translation.router, prefix="/translate", tags=["Translation"])
