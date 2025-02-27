@@ -1,13 +1,10 @@
 from fastapi import APIRouter, HTTPException, Query
 
-from schemas.v1.stock import (
-    RealTimeStockDataResponse,
-    StockInsightRequest,
-    StockInsightResponse,
-    StockPredictionResponse,
-    StockSymbol,
-)
-from services.stock import fetch_real_time_stock_data, generate_stock_predictions
+from schemas.v1.stock import (RealTimeStockDataResponse, StockInsightRequest,
+                              StockInsightResponse, StockPredictionResponse,
+                              StockSymbol)
+from services.stock import (fetch_real_time_stock_data,
+                            generate_stock_predictions)
 
 router = APIRouter()
 

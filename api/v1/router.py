@@ -1,17 +1,8 @@
 from fastapi import APIRouter
 
-from api.v1.endpoints import (
-    CalendarHub,
-    DailyEnglish,
-    MotivatorPlay,
-    affirmations,
-    crypto,
-    health,
-    stock,
-    timezone,
-    weather,
-    translation,
-)
+from api.v1.endpoints import (CalendarHub, DailyEnglish, MotivatorPlay,
+                              affirmations, crypto, health, stock, timezone,
+                              translation, weather)
 
 api_router = APIRouter()
 
