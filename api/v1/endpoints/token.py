@@ -1,8 +1,12 @@
 from fastapi import APIRouter, Depends, Request
 
 from core.security import JWTRefreshTokenBearer
-from schemas.v1.token import (USER_ID_CLAIM, AccessToken, RefreshToken,
-                              RefreshTokenResponse)
+from schemas.v1.token import (
+    USER_ID_CLAIM,
+    AccessToken,
+    RefreshToken,
+    RefreshTokenResponse,
+)
 from services.authentication import get_user_by_id
 
 router = APIRouter()
