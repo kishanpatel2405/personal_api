@@ -255,6 +255,7 @@ typing-extensions = "4.12.2"
 urllib3 = "2.2.3"
 uvicorn = "0.32.1"
 yarl = "1.18.0"
+sphinx = "^8.2.1"
 
 
 [tool.poetry.group.dev.dependencies]

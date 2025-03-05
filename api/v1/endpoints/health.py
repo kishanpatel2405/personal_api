@@ -1,14 +1,9 @@
 import psutil
 from fastapi import APIRouter
 
-from schemas.v1.health import (
-    CpuTemperatureResponse,
-    DiskUsageResponse,
-    HealthResult,
-    IPAddressResponse,
-    NetworkStatsResponse,
-    SystemMetricsResponse,
-)
+from schemas.v1.health import (CpuTemperatureResponse, DiskUsageResponse,
+                               HealthResult, IPAddressResponse,
+                               NetworkStatsResponse, SystemMetricsResponse)
 from services.health import get_external_ip, get_local_ip
 from utils.enums import Ip_Type
 from utils.errors import ApiException, ErrorMessageCodes
@@ -73,7 +68,7 @@ async def get_disk_usage():
         raise ApiException(
             msg=f"Could not retrieve disk usage: {str(e)}",
             error_code=ErrorMessageCodes.DISK_USAGE_FAILED,
-            status_code=500,
+            status_code=404,
         )
 
     return DiskUsageResponse(
